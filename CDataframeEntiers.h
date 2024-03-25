@@ -9,6 +9,7 @@ typedef struct {
 } COLUMN;
 
 
+
 COLUMN *create_column(char* title);
 
 
