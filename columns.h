@@ -22,5 +22,8 @@ typedef struct {
 COLUMN *create_column(char* title);
 void insertValue(COLUMN *column, int value);
 
+void delete_column(COLUMN **col);
+void print_col(COLUMN* col);
+
 
 #endif //PROJET_LANGAGE_C_COLUMNS_H
