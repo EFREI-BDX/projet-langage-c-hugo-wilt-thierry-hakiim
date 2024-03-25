@@ -1,7 +1,8 @@
 #include <stdio.h>
-#include "CDataframeEntiers.h"
+#include "columns.h"
 
 int main() {
-    printf("Hello, World!\n");
+    COLUMN *mycol = create_column("My column");
+    printf("%d",mycol->PHYSICAL_SIZE);
     return 0;
 }

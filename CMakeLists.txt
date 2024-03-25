@@ -4,5 +4,5 @@ project(Projet_Langage_C C)
 set(CMAKE_C_STANDARD 11)
 
 add_executable(Projet_Langage_C main.c
-        CDataframeEntiers.c
-        CDataframeEntiers.h)
+        columns.c
+        columns.h)
