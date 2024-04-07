@@ -3,16 +3,10 @@
 //
 
 #include "columns.h"
-#include <stdio.h>
-#include <math.h>
-#include <stdlib.h>
-#include <string.h>
 
 
-
-
-COLUMN* create_column(char* title){
-    COLUMN *newColumn= (COLUMN*) malloc( REALOC_SIZE* sizeof(COLUMN));
+COLUMN *create_column(char* title){
+    COLUMN *newColumn= (COLUMN*) malloc( REALOC_SIZE* sizeof(COLUMN));;
     newColumn->title = (char*) malloc((strlen(title) + 1) * sizeof(char));
     strcpy(newColumn->title, title);
     newColumn->PHYSICAL_SIZE = REALOC_SIZE;
@@ -59,16 +53,16 @@ void print_col(COLUMN* col){
     for (int i =0; i<col->LOGICAL_SIZE;i++){
         switch(col->data[i].type){
             case INT_TYPE :
-                printf("%d = %d  ",i, col->data[i].value.int_type);
+                printf("[%d] = %d  ",i, col->data[i].value.int_type);
                 break;
             case CHAR_TYPE :
-                printf("%d = %c",i,col->data[i].value.char_type);
+                printf("%c = %c",i,col->data[i].value.char_type);
                 break;
             case FLOAT_TYPE :
-                printf("%d = %f",i,col->data[i].value.float_type);
+                printf("%f = %f",i,col->data[i].value.float_type);
                 break;
             case DOUBLE_TYPE :
-                printf("%d = %lf",i,col->data[i].value.double_type);
+                printf("%lf = %lf",i,col->data[i].value.double_type);
                 break;
             default :
                 printf("ERROR : unknown type.\n");
@@ -120,11 +114,9 @@ int numberOfValuesUnderSearchValue(COLUMN* col,Data searchValue){
     }
     return cptValuesUnderSearchValue;
 }
-
 int isSameType(Data* value1, Data* value2){
     return (value1->type == value2->type);
 }
-
 int compareValues(Data* value1, Data* value2) {
     if (!isSameType(value1, value2)) {
         printf("Error: The two values are not of the same type.\n");
@@ -154,62 +146,5 @@ int compareValues(Data* value1, Data* value2) {
         }
     }
 }
-
-
-int get_type(char* input){
-    double x;
-    int num;
-    char str[20] = "";
-    double tolerance = 1e-12;
-    if (sscanf(input, "%lf", &x) == 1) {
-        num = (int)x; // We cast to int.
-        if ( fabs(x - num)/x > tolerance ) {
-            //float
-            return 1;
-        } else {
-            //int
-            return 2;
-        }
-    } else if (sscanf(input, "%s", str) == 1) {
-        // string
-        return 3;
-    } else {
-        // error
-        return -1;
-    }
-}
-
-
-
-
-void hardFill(COLUMN** array){
-    for (int i = 0; i < 3; i++) {
-        //title
-        char title[10]= "Test";
-        title[4] = i;
-
-        array[i] = create_column(title);
-        //input
-        Data int_test, int_test2, int_test3, char_test, float_test;
-        int_test.type = INT_TYPE;
-        int_test.value.int_type = 1;
-        int_test2.type = INT_TYPE;
-        int_test2.value.int_type = 2;
-        int_test3.type = INT_TYPE;
-        int_test3.value.int_type = 3;
-        char_test.type = CHAR_TYPE;
-        char_test.value.char_type = 'e';
-        float_test.type = FLOAT_TYPE;
-        float_test.value.float_type = 3.1;
-
-        insert_value(array[i], int_test);
-        insert_value(array[i], float_test);
-        insert_value(array[i], int_test2);
-        insert_value(array[i], char_test);
-        insert_value(array[i], int_test3);
-
-    }
-}
-
 
 
