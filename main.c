@@ -3,7 +3,7 @@
 #include "CDataframe.h"
 
 int main() {
-    COLUMN *mycol = create_column("My column");
+    /*COLUMN *mycol = create_column("My column");
     Data int_test, int_test2, int_test3;
     int_test.type = INT_TYPE;
     int_test.value.int_type = 1;
@@ -21,7 +21,8 @@ int main() {
     printf("%d occurrence\n", occurrence(mycol, int_test));
     printf("%d values above search value\n", numberOfValuesAboveSearchValue(mycol, int_test));
     printf("%d values above search value\n", numberOfValuesUnderSearchValue(mycol, int_test2));
-
+    */
+    printf("%d", get_type());
     /*
     tableau CDataframe = createEmptyCDataframe();
     inputFillCDataframe(&CDataframe);

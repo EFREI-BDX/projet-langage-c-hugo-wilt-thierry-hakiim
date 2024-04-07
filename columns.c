@@ -4,6 +4,8 @@
 
 #include "columns.h"
 #include <stdio.h>
+#include <math.h>
+#include <stdlib.h>
 
 
 COLUMN *create_column(char* title){
@@ -161,17 +163,47 @@ tableau* inputFillCDataframe(tableau *DataFrame){
     char *title = (char*) malloc((strlen(title) + 1) * sizeof(char));
     printf("Enter a title : ");
     scanf("%s", title);
-    int numberOfValues, valueToInsert, status;
+    int numberOfValues, status;
+    char valueToInsert;
     printf("Enter number of values : ");
     scanf("%d", &numberOfValues);
     for( int i= 0; i<numberOfValues;i++){
         printf("Enter a value to insert : ");
-        scanf("%d", &valueToInsert);
+        fgets(&valueToInsert, 256, stdin);
+        Data val;
 
-        if (status == 0){
-            printf("Error");
-        }
+        //status = insert_value(*DataFrame, valueToInsert);
+
     }
     return DataFrame;
 }
 
+int get_type(){
+    char input[100] = "";
+    double x;
+    int num;
+    char str[20] = "";
+    int assignment[5] = {0};
+    double tolerance = 1e-12;
+
+    printf("Pls. provide input: ");
+    fgets(input, 100, stdin);
+
+    if (sscanf(input, "%lf", &x) == 1) {
+        // Is it a number? All integers are also doubles.
+        num = (int)x; // We cast to int.
+        if ( fabs(x - num)/x > tolerance ) {
+            //float
+            return 1;
+        } else {
+            //int
+            return 2;
+        }
+    } else if (sscanf(input, "%s", str) == 1) {
+        // string
+        return 3;
+    } else {
+        // error
+        return -1;
+    }
+}

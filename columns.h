@@ -53,5 +53,6 @@ int compareValues(Data* value1, Data* value2);
 
 tableau createEmptyCDataframe();
 tableau* inputFillCDataframe(tableau *DataFrame);
+int get_type();
 
 #endif //PROJET_LANGAGE_C_COLUMNS_H
