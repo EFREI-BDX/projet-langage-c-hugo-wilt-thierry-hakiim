@@ -6,8 +6,9 @@
 #define PROJET_LANGAGE_C_CDATAFRAME_H
 #include "columns.h"
 
-typedef int *tableau;
+
+/*typedef COLUMN *tableau;
 
 tableau *createEmptyCDataframe();
-int* inputFillCDataframe(tableau *DataFrame);
+int* inputFillCDataframe(tableau *DataFrame);*/
 #endif //PROJET_LANGAGE_C_CDATAFRAME_H
