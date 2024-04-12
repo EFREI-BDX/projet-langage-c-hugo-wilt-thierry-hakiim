@@ -8,7 +8,7 @@
 #include <stdlib.h>
 
 
-COLUMN *create_column(char* title){
+COLUMN* create_column(char* title){
     COLUMN *newColumn= (COLUMN*) malloc( REALOC_SIZE* sizeof(COLUMN));
     newColumn->title = (char*) malloc((strlen(title) + 1) * sizeof(char));
     strcpy(newColumn->title, title);
@@ -152,45 +152,13 @@ int compareValues(Data* value1, Data* value2) {
     }
 }
 
-tableau createEmptyCDataframe(){
-    tableau emptyDataFrame = (COLUMN*) malloc(REALOC_SIZE*sizeof(COLUMN));
-    return emptyDataFrame;
-}
 
-
-tableau* inputFillCDataframe(tableau *DataFrame){
-    /// Dataframe??
-    char *title = (char*) malloc((strlen(title) + 1) * sizeof(char));
-    printf("Enter a title : ");
-    scanf("%s", title);
-    int numberOfValues, status;
-    char valueToInsert;
-    printf("Enter number of values : ");
-    scanf("%d", &numberOfValues);
-    for( int i= 0; i<numberOfValues;i++){
-        printf("Enter a value to insert : ");
-        fgets(&valueToInsert, 256, stdin);
-        Data val;
-
-        //status = insert_value(*DataFrame, valueToInsert);
-
-    }
-    return DataFrame;
-}
-
-int get_type(){
-    char input[100] = "";
+int get_type(char* input){
     double x;
     int num;
     char str[20] = "";
-    int assignment[5] = {0};
     double tolerance = 1e-12;
-
-    printf("Pls. provide input: ");
-    fgets(input, 100, stdin);
-
     if (sscanf(input, "%lf", &x) == 1) {
-        // Is it a number? All integers are also doubles.
         num = (int)x; // We cast to int.
         if ( fabs(x - num)/x > tolerance ) {
             //float
@@ -205,5 +173,85 @@ int get_type(){
     } else {
         // error
         return -1;
+    }
+}
+
+COLUMN** createEmptyCDataframe(int size) {
+    // Allouer de la mémoire pour le tableau d'adresses
+    COLUMN** array = (COLUMN**)malloc(size * sizeof(COLUMN*));
+    if (array == NULL) {
+        printf("Erreur d'allocation de mémoire\n");
+        exit(EXIT_FAILURE);
+    }
+    return array;
+}
+
+
+void fillArray(COLUMN** array, int size) {
+    for (int i = 0; i < size; i++) {
+        //title
+        char *title = (char*) malloc((strlen(title) + 1) * sizeof(char));
+        printf("Enter a title : ");
+        scanf("%s", title);
+        array[i] = create_column(title);
+        //input
+        int numberOfValues, status, type;
+        printf("Enter number of values : ");
+        fflush(stdout);
+        scanf("%d ", &numberOfValues);
+        for( int j= 0; j<numberOfValues;j++){
+            char input[100] = "";
+            fflush(stdout);
+            printf("Enter a value to insert : ");
+            fgets(input, 100, stdin);
+            type = get_type(input);
+            Data val;
+            switch (type) {
+                case 1:
+                    val.type = FLOAT_TYPE;
+                    float resultat_f = atof(input);
+                    val.value.float_type = resultat_f;
+                    break;
+                case 2:
+                    val.type = INT_TYPE;
+                    int resultat_i = atoi(input);
+                    val.value.int_type = resultat_i;
+                    break;
+                case 3:
+                    val.type = CHAR_TYPE;
+                    val.value.char_type = input[0];
+                    //A changer
+                    break;
+                default:
+                    val.value.char_type = ' ';
+            }
+            status = insert_value(*array, val);
+            if (status == 0){
+                printf("Error");
+            }
+        }
+    }
+}
+
+void displayColumns(COLUMN** array, int size) {
+    for (int i = 0; i < size; i++) {
+        printf("Title : %s Logical size : %d Physical size : %d Data : ", array[i]->title, array[i]->LOGICAL_SIZE, array[i]->PHYSICAL_SIZE);
+        for (int val = 0; val<array[i]->LOGICAL_SIZE; val++){
+            switch(array[i]->data[val].type) {
+                case INT_TYPE:
+                    printf("%d ", array[i]->data[val].value.int_type);
+                    break;
+                case FLOAT_TYPE:
+                    printf("%f ", array[i]->data[val].value.float_type);
+                    break;
+                case CHAR_TYPE:
+                    printf("%c ", array[i]->data[val].value.char_type);
+                    break;
+                default:
+                    printf("Unknown data type\n");
+                    break;
+            }
+        }
+        printf("\n");
     }
 }

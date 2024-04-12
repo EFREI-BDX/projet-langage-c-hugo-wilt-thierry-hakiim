@@ -37,7 +37,7 @@ typedef struct {
 
 typedef COLUMN* tableau;
 
-COLUMN *create_column(char* title);
+COLUMN* create_column(char* title);
 int insert_value(COLUMN* column, Data value);
 void delete_column(COLUMN **col);
 void print_col(COLUMN* col);
@@ -51,8 +51,9 @@ int compareValues(Data* value1, Data* value2);
 
 
 
-tableau createEmptyCDataframe();
-tableau* inputFillCDataframe(tableau *DataFrame);
-int get_type();
 
+int get_type(char* input);
+COLUMN** createEmptyCDataframe(int size);
+void fillArray(COLUMN** array, int size);
+void displayColumns(COLUMN** array, int size);
 #endif //PROJET_LANGAGE_C_COLUMNS_H

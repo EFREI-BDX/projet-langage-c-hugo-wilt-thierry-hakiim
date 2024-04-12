@@ -21,13 +21,15 @@ int main() {
     printf("%d occurrence\n", occurrence(mycol, int_test));
     printf("%d values above search value\n", numberOfValuesAboveSearchValue(mycol, int_test));
     printf("%d values above search value\n", numberOfValuesUnderSearchValue(mycol, int_test2));
-    */
-    printf("%d", get_type());
-    /*
+
     tableau CDataframe = createEmptyCDataframe();
     inputFillCDataframe(&CDataframe);
-     */
+*/
 
+    int size = 3;
+    COLUMN** array = createEmptyCDataframe(size);
+    fillArray(array, size);
 
+    displayColumns(array, size);
     return 0;
 }
