@@ -225,7 +225,7 @@ void fillArray(COLUMN** array, int size) {
                 default:
                     val.value.char_type = ' ';
             }
-            status = insert_value(*array, val);
+            status = insert_value(array[i], val);
             if (status == 0){
                 printf("Error");
             }
