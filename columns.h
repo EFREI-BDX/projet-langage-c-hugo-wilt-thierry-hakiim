@@ -50,10 +50,12 @@ int compareValues(Data* value1, Data* value2);
 
 
 
-
-
 int get_type(char* input);
 COLUMN** createEmptyCDataframe(int size);
 void fillArray(COLUMN** array, int size);
-void displayColumns(COLUMN** array, int size);
+void displayDataFrame(COLUMN** array, int size);
+void hardFill(COLUMN** array);
+void displayLinesWithLimit(COLUMN** array, int size, Data limit);
+void displayColumnsWithLimit(COLUMN** array, int size, char *title);
+void addColumn(COLUMN*** array, int* size_ptr, char* title);
 #endif //PROJET_LANGAGE_C_COLUMNS_H

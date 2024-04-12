@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
+#include <string.h>
 
 
 COLUMN* create_column(char* title){
@@ -233,7 +234,38 @@ void fillArray(COLUMN** array, int size) {
     }
 }
 
-void displayColumns(COLUMN** array, int size) {
+
+void hardFill(COLUMN** array){
+    for (int i = 0; i < 3; i++) {
+        //title
+        char title[10]= "Test";
+        title[4] = i;
+
+        array[i] = create_column(title);
+        //input
+        Data int_test, int_test2, int_test3, char_test, float_test;
+        int_test.type = INT_TYPE;
+        int_test.value.int_type = 1;
+        int_test2.type = INT_TYPE;
+        int_test2.value.int_type = 2;
+        int_test3.type = INT_TYPE;
+        int_test3.value.int_type = 3;
+        char_test.type = CHAR_TYPE;
+        char_test.value.char_type = 'e';
+        float_test.type = FLOAT_TYPE;
+        float_test.value.float_type = 3.1;
+
+        insert_value(array[i], int_test);
+        insert_value(array[i], float_test);
+        insert_value(array[i], int_test2);
+        insert_value(array[i], char_test);
+        insert_value(array[i], int_test3);
+
+    }
+}
+
+void displayDataFrame(COLUMN** array, int size) {
+    printf("Dataframe \n");
     for (int i = 0; i < size; i++) {
         printf("Title : %s Logical size : %d Physical size : %d Data : ", array[i]->title, array[i]->LOGICAL_SIZE, array[i]->PHYSICAL_SIZE);
         for (int val = 0; val<array[i]->LOGICAL_SIZE; val++){
@@ -242,7 +274,7 @@ void displayColumns(COLUMN** array, int size) {
                     printf("%d ", array[i]->data[val].value.int_type);
                     break;
                 case FLOAT_TYPE:
-                    printf("%f ", array[i]->data[val].value.float_type);
+                    printf("%.2f ", array[i]->data[val].value.float_type);
                     break;
                 case CHAR_TYPE:
                     printf("%c ", array[i]->data[val].value.char_type);
@@ -255,3 +287,74 @@ void displayColumns(COLUMN** array, int size) {
         printf("\n");
     }
 }
+
+void displayLinesWithLimit(COLUMN** array, int size, Data limit) {
+    printf("Lines  \n");
+    for (int i = 0; i < size; i++) {
+        for (int val = 0; val<array[i]->LOGICAL_SIZE; val++){
+            if (isSameType(&(array[i]->data[val]), &limit)){
+                if (compareValues(&(array[i]->data[val]), &limit) == 1){
+                    printf("Title : %s Logical size : %d Physical size : %d Data : ", array[i]->title, array[i]->LOGICAL_SIZE, array[i]->PHYSICAL_SIZE);
+                    switch(array[i]->data[val].type) {
+                        case INT_TYPE:
+                            printf("%d ", array[i]->data[val].value.int_type);
+                            break;
+                        case FLOAT_TYPE:
+                            printf("%.2f ", array[i]->data[val].value.float_type);
+                            break;
+                        case CHAR_TYPE:
+                            printf("%c ", array[i]->data[val].value.char_type);
+                            break;
+                        case DOUBLE_TYPE:
+                            break;
+                        default:
+                            printf("Unknown data type\n");
+                            break;
+                    }
+                }
+            }
+        }
+        printf("\n");
+    }
+}
+
+
+void displayColumnsWithLimit(COLUMN** array, int size, char *title) {
+    printf("Columns  \n");
+    for (int i = 0; i < size; i++) {
+        if (strcmp(array[i]->title, title) >0 || strcmp(array[i]->title, title) ==0) {
+            printf("Title : %s Logical size : %d Physical size : %d Data : ", array[i]->title, array[i]->LOGICAL_SIZE, array[i]->PHYSICAL_SIZE);
+            for (int val = 0; val<array[i]->LOGICAL_SIZE; val++){
+                switch(array[i]->data[val].type) {
+                    case INT_TYPE:
+                        printf("%d ", array[i]->data[val].value.int_type);
+                        break;
+                    case FLOAT_TYPE:
+                        printf("%.2f ", array[i]->data[val].value.float_type);
+                        break;
+                    case CHAR_TYPE:
+                        printf("%c ", array[i]->data[val].value.char_type);
+                        break;
+                    default:
+                        printf("Unknown data type\n");
+                        break;
+                }
+            }
+            printf("\n");
+        }
+    }
+}
+
+void addColumn(COLUMN*** array, int* size, char* title) {
+    int new_size = *size + 1;
+    COLUMN** new_array = (COLUMN**)realloc(*array, new_size * sizeof(COLUMN*));
+    if (new_array == NULL) {
+        printf("Error\n");
+        exit(EXIT_FAILURE);
+    }
+    new_array[new_size - 1] = create_column(title);
+    *array = new_array;
+    *size = new_size;
+}
+
+

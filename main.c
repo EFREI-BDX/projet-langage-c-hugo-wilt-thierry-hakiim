@@ -24,12 +24,28 @@ int main() {
 
     tableau CDataframe = createEmptyCDataframe();
     inputFillCDataframe(&CDataframe);
-*/
 
+    //remplissage à la main
     int size = 3;
     COLUMN** array = createEmptyCDataframe(size);
     fillArray(array, size);
+    displayDataFrame(array, size);
 
-    displayColumns(array, size);
+    //remplissage en dur
+    int size = 3;
+    COLUMN** array = createEmptyCDataframe(size);
+    hardFill(array);
+    Data int_test2;
+    int_test2.type = INT_TYPE;
+    int_test2.value.int_type = 2;
+    displayColumnsWithLimit(array, size, "Test");
+    displayLinesWithLimit(array, size, int_test2);
+    */
+    int size = 2;
+    COLUMN** array = createEmptyCDataframe(size);
+    fillArray(array, size);
+    displayDataFrame(array, size);
+    addColumn(&array, &size, "pomme");
+    displayDataFrame(array, size);
     return 0;
 }
