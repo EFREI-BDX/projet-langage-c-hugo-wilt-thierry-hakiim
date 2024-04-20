@@ -10,18 +10,22 @@
 #define REALOC_SIZE 256
 
 typedef enum {
+    UINT_TYPE,
     INT_TYPE,
     CHAR_TYPE,
     FLOAT_TYPE,
     DOUBLE_TYPE,
+    STRING_TYPE,
 }DataType;
 typedef struct {
     DataType type;
     union {
+        unsigned unsigned_type;
         int int_type;
         char char_type;
         float float_type;
         double double_type;
+        char string_type;
     }value;
 }Data;
 

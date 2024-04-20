@@ -27,4 +27,12 @@ void remove_element(Data *data, int index, int array_length);
 void removeColumnFromDataFrame(Liste* liste, char* title);
 void renamedColumn(Liste* liste, char* oldTitle, char* newTitle);
 int existsInDataframe(Liste liste, Data valToCompare);
+void accessValueAtIndex(Liste liste, int lineNumber, int columnNumber);
+void replaceValueAtIndex(Liste liste, int lineNumber, int columnNumber);
+void displayColumnsNames(Liste liste);
+int numberOfLines(Liste liste);
+int numberOfColumns(Liste liste);
+int numberOfCellsEqualToVal(Liste liste, Data valToCompare);
+int numberOfCellsUnderVal(Liste liste, Data valToCompare);
+int numberOfCellsAboveVal(Liste liste, Data valToCompare);
 #endif //PROJET_LANGAGE_C_LINKEDLIST_H

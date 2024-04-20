@@ -277,7 +277,152 @@ int existsInDataframe(Liste liste, Data valToCompare){
                 isFound = 1;
             }
         }
-        temp = temp->next;
+
     }
     return isFound;
+}
+
+void accessValueAtIndex(Liste liste, int lineNumber, int columnNumber){
+    Cell* temp = liste;
+    int cpt = 0;
+    while (temp != NULL){
+        if (cpt == columnNumber){
+            if (lineNumber>=temp->addressColumn->LOGICAL_SIZE){
+                printf("Value index out of range\n");
+            } else {
+                switch(temp->addressColumn->data[lineNumber].type) {
+                    case INT_TYPE:
+                        printf("%d\n", temp->addressColumn->data[lineNumber].value.int_type);
+                        break;
+                    case FLOAT_TYPE:
+                        printf("%.2f\n", temp->addressColumn->data[lineNumber].value.float_type);
+                        break;
+                    case CHAR_TYPE:
+                        printf("%c\n", temp->addressColumn->data[lineNumber].value.char_type);
+                        break;
+                    default:
+                        printf("Unknown data type\n");
+                        break;
+                }
+            }
+        }
+        cpt+=1;
+        temp = temp->next;
+    }
+}
+
+void replaceValueAtIndex(Liste liste, int lineNumber, int columnNumber){
+    Cell* temp = liste;
+    int cpt = 0;
+    while (temp != NULL){
+        if (cpt == columnNumber){
+            if (lineNumber>=temp->addressColumn->LOGICAL_SIZE){
+                printf("Value index out of range");
+            } else {
+                char input[20];
+                int type;
+                printf("Enter value : ");
+                fflush(stdin);
+                fgets(input, 100, stdin);
+                type = get_type(input);
+                Data val;
+                switch (type) {
+                    case 1:
+                        val.type = FLOAT_TYPE;
+                        val.value.float_type = atof(input);
+                        break;
+                    case 2:
+                        val.type = INT_TYPE;
+                        val.value.int_type = atoi(input);
+                        break;
+                    case 3:
+                        val.type = CHAR_TYPE;
+                        val.value.char_type = input[0];
+                        break;
+                    default:
+                        val.value.char_type = ' ';
+                }
+                temp->addressColumn->data[lineNumber] = val;
+            }
+        }
+        cpt+=1;
+        temp = temp->next;
+    }
+}
+
+void displayColumnsNames(Liste liste){
+    Cell* temp = liste;
+    while (temp!=NULL){
+        printf("%s ", temp->addressColumn->title);
+        temp = temp->next;
+    }
+}
+
+int numberOfLines(Liste liste){
+    Cell* temp = liste;
+    int cpt = 0;
+    while (temp!=NULL){
+        cpt+= temp->addressColumn->LOGICAL_SIZE;
+        temp = temp->next;
+    }
+    return cpt;
+}
+
+int numberOfColumns(Liste liste){
+    Cell* temp = liste;
+    int cpt = 0;
+    while (temp!=NULL){
+        cpt+=1;
+        temp = temp->next;
+    }
+    return cpt;
+}
+
+int numberOfCellsEqualToVal(Liste liste, Data valToCompare){
+    Cell* temp = liste;
+    int cpt = 0;
+    while (temp!=NULL){
+        for (int val = 0; val < temp->addressColumn->LOGICAL_SIZE; val++){
+            if (isSameType(&(temp->addressColumn->data[val]), &valToCompare)){
+                if (compareValues(&(temp->addressColumn->data[val]), &valToCompare) == 0){
+                    cpt += 1;
+                }
+            }
+        }
+        temp = temp->next;
+    }
+    return cpt;
+}
+
+
+int numberOfCellsUnderVal(Liste liste, Data valToCompare){
+    Cell* temp = liste;
+    int cpt = 0;
+    while (temp!=NULL){
+        for (int val = 0; val < temp->addressColumn->LOGICAL_SIZE; val++){
+            if (isSameType(&(temp->addressColumn->data[val]), &valToCompare)){
+                if (compareValues(&(temp->addressColumn->data[val]), &valToCompare) == -1){
+                    cpt += 1;
+                }
+            }
+        }
+        temp = temp->next;
+    }
+    return cpt;
+}
+
+int numberOfCellsAboveVal(Liste liste, Data valToCompare){
+    Cell* temp = liste;
+    int cpt = 0;
+    while (temp!=NULL){
+        for (int val = 0; val < temp->addressColumn->LOGICAL_SIZE; val++){
+            if (isSameType(&(temp->addressColumn->data[val]), &valToCompare)){
+                if (compareValues(&(temp->addressColumn->data[val]), &valToCompare) == 1){
+                    cpt += 1;
+                }
+            }
+        }
+        temp = temp->next;
+    }
+    return cpt;
 }
