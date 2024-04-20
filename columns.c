@@ -9,6 +9,8 @@
 #include <string.h>
 
 
+
+
 COLUMN* create_column(char* title){
     COLUMN *newColumn= (COLUMN*) malloc( REALOC_SIZE* sizeof(COLUMN));
     newColumn->title = (char*) malloc((strlen(title) + 1) * sizeof(char));
@@ -182,7 +184,6 @@ COLUMN** createEmptyCDataframe(int size) {
     COLUMN** array = (COLUMN**)malloc(size * sizeof(COLUMN*));
     if (array == NULL) {
         printf("Erreur d'allocation de mémoire\n");
-        exit(EXIT_FAILURE);
     }
     return array;
 }
@@ -202,7 +203,7 @@ void fillArray(COLUMN** array, int size) {
         scanf("%d ", &numberOfValues);
         for( int j= 0; j<numberOfValues;j++){
             char input[100] = "";
-            fflush(stdout);
+            fflush(stdin);
             printf("Enter a value to insert : ");
             fgets(input, 100, stdin);
             type = get_type(input);
@@ -350,7 +351,6 @@ void addColumn(COLUMN*** array, int* size, char* title) {
     COLUMN** new_array = (COLUMN**)realloc(*array, new_size * sizeof(COLUMN*));
     if (new_array == NULL) {
         printf("Error\n");
-        exit(EXIT_FAILURE);
     }
     new_array[new_size - 1] = create_column(title);
     *array = new_array;

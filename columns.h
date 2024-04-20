@@ -8,7 +8,6 @@
 #include <stdlib.h>
 #include <string.h>
 #define REALOC_SIZE 256
-#include "CDataframe.h"
 
 typedef enum {
     INT_TYPE,
@@ -58,4 +57,9 @@ void hardFill(COLUMN** array);
 void displayLinesWithLimit(COLUMN** array, int size, Data limit);
 void displayColumnsWithLimit(COLUMN** array, int size, char *title);
 void addColumn(COLUMN*** array, int* size_ptr, char* title);
+
+
+
+
+
 #endif //PROJET_LANGAGE_C_COLUMNS_H

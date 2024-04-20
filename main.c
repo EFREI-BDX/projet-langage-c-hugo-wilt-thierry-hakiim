@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "columns.h"
-#include "CDataframe.h"
+#include "linkedList.h"
+
 
 int main() {
     /*COLUMN *mycol = create_column("My column");
@@ -41,11 +42,29 @@ int main() {
     displayColumnsWithLimit(array, size, "Test");
     displayLinesWithLimit(array, size, int_test2);
     */
+    /*
     int size = 2;
     COLUMN** array = createEmptyCDataframe(size);
     fillArray(array, size);
     displayDataFrame(array, size);
     addColumn(&array, &size, "pomme");
     displayDataFrame(array, size);
+    */
+    int size = 3;
+    Liste myliste=NULL;
+    myliste = inputLinkedList(size, &myliste);
+    displayList(myliste);
+    //displayLinkedLinesWithLimit(myliste, int_test2);
+    //displayLinkedColumnsWithLimit(myliste, "Test1");
+    //addRowToDataFrame(myliste);
+    //removeRowFromDataFrame(myliste, 2);
+    //removeColumnFromDataFrame(&myliste, "Test");
+    //renamedColumn(&myliste, "Test", "hello22");
+    Data int_test2;
+    int_test2.type = INT_TYPE;
+    int_test2.value.int_type = 2;
+    printf("%d",existsInDataframe(myliste, int_test2));
+    //displayList(myliste);
     return 0;
 }
+
