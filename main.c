@@ -6,36 +6,8 @@
 Data getInput(int type, char *input);
 
 int main() {
-    /*
-      int size = 3;
-      Liste myliste=NULL;
-      inputLinkedList(size, &myliste);
-      displayList(myliste);
-      //displayLinkedLinesWithLimit(myliste, int_test2);
-      //displayLinkedColumnsWithLimit(myliste, "Test1");
-      //addRowToDataFrame(myliste);
-      //removeRowFromDataFrame(myliste, 2);
-      //removeColumnFromDataFrame(&myliste, "Test");
-      /*renamedColumn(&myliste, "Test", "hello22");
-      Data int_test2;
-      int_test2.type = INT_TYPE;
-      int_test2.value.int_type = 2;
-      printf("%d\n",existsInDataframe(myliste, int_test2));
-      accessValueAtIndex(myliste, 1, 1);
-      replaceValueAtIndex(myliste, 1, 1);
-      accessValueAtIndex(myliste, 1, 1);
-      displayColumnsNames(myliste);
-
-      //displayList(myliste);
-      Data int_test2;
-      int_test2.type = INT_TYPE;
-      int_test2.value.int_type = 2;
-      printf("%d\n", numberOfColumns(myliste));
-      printf("%d\n", numberOfLines(myliste));
-      printf("%d\n", numberOfCellsEqualToVal(myliste, int_test2));*/
     int partSelection, functionSelection, type, numberOfValues, index, category, size;
     char title[20], input[20];
-
     printf("Please enter which part of the project you want to test. \nFor columns : 1 \nFor Dataframe : 2 \nElse : 3\n");
     scanf("%d", &partSelection);
     if (partSelection == 1){
@@ -189,7 +161,6 @@ int main() {
             }
             if (functionSelection == 7){
                 hardFillLinked(&myliste);
-                char input[100];
                 printf("Enter a value to compare with :");
                 Data val = getInput(type, input);
                 printf("1 if value exists 0 otherwise : %d",existsInDataframe(myliste, val));
@@ -224,7 +195,6 @@ int main() {
             }
             if (functionSelection == 2){
                 hardFillLinked(&myliste);
-                char input[100];
                 printf("Enter a value to compare with :");
                 Data val = getInput(type, input);
                 displayLinkedLinesWithLimit(myliste, val);
@@ -254,21 +224,18 @@ int main() {
             }
             if (functionSelection == 3){
                 hardFillLinked(&myliste);
-                char input[100];
                 printf("Enter a value to compare with :");
                 Data val = getInput(type, input);
                 printf("There are %d cells equal to val", numberOfCellsEqualToVal(myliste, val));
             }
             if (functionSelection == 4){
                 hardFillLinked(&myliste);
-                char input[100];
                 printf("Enter a value to compare with :");
                 Data val = getInput(type, input);
                 printf("There are %d cells equal to val", numberOfCellsUnderVal(myliste, val));
             }
             if (functionSelection == 5){
                 hardFillLinked(&myliste);
-                char input[100];
                 printf("Enter a value to compare with :");
                 Data val = getInput(type, input);
                 printf("There are %d cells equal to val", numberOfCellsAboveVal(myliste, val));
@@ -278,7 +245,6 @@ int main() {
     }
     return 0;
 }
-
 Data getInput(int type, char *input) {
     fflush(stdin);
     fgets(input, 100, stdin);
@@ -305,4 +271,3 @@ Data getInput(int type, char *input) {
     }
     return val;
 }
-
