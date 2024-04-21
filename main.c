@@ -3,6 +3,8 @@
 #include "linkedList.h"
 
 
+Data getInput(int type, char *input);
+
 int main() {
     /*
       int size = 3;
@@ -33,6 +35,7 @@ int main() {
       printf("%d\n", numberOfCellsEqualToVal(myliste, int_test2));*/
     int partSelection, functionSelection, type, numberOfValues, index, category, size;
     char title[20], input[20];
+
     printf("Please enter which part of the project you want to test. \nFor columns : 1 \nFor Dataframe : 2 \nElse : 3\n");
     scanf("%d", &partSelection);
     if (partSelection == 1){
@@ -141,15 +144,165 @@ int main() {
         printf("Please enter which function you want to use : \n");
         Liste myliste=NULL;
         if (category == 1){
-            printf("inputLinkedList : 1\nfillList : 2\naddRowToDataFrame : 3\nremoveRowFromDataFrame : 4\nremoveColumnFromDataFrame : 5\nrenamedColumn : 6\nrenamedColumn : 7\nexistsInDataframe : 8\naccessValueAtIndex : 9\nreplaceValueAtIndex : 10\n");
+            printf("fillList : 1\nhardFillLinked : 2\naddRowToDataFrame : 3\nremoveRowFromDataFrame : 4\nremoveColumnFromDataFrame : 5\nrenamedColumn : 6\nexistsInDataframe : 7\naccessValueAtIndex : 8\nreplaceValueAtIndex : 9\n");
             scanf("%d", &functionSelection);
             if (functionSelection == 1){
-                printf("Enter a number of columns");
-                scanf("%d", &size);
-                inputLinkedList(size, &myliste);
+                size = 3;
+                Liste myliste2=NULL;
+                myliste = inputLinkedList(size, &myliste2);
+                displayList(myliste2);
             }
+            if (functionSelection == 2){
+                hardFillLinked(&myliste);
+                displayList(myliste);
+            }
+            if (functionSelection == 3){
+                hardFillLinked(&myliste);
+                addRowToDataFrame(myliste);
+                displayList(myliste);
+            }
+            if (functionSelection == 4){
+                hardFillLinked(&myliste);
+                printf("Enter index value : ");
+                scanf("%d", &index);
+                removeRowFromDataFrame(myliste, index);
+                displayList(myliste);
+            }
+            if (functionSelection == 5){
+                char titleR;
+                hardFillLinked(&myliste);
+                printf("Enter title: ");
+                scanf("%s", &titleR);
+                removeColumnFromDataFrame(&myliste, &titleR);
+                displayList(myliste);
+            }
+            if (functionSelection == 6){
+                hardFillLinked(&myliste);
+                char oldTitle, newTitle;
+                printf("Enter old title : ");
+                scanf("%s", &oldTitle);
+                printf("Enter new title : ");
+                scanf("%s", &newTitle);
+                printf("\n%s %s\n", &oldTitle, &newTitle);
+                renamedColumn(&myliste,&oldTitle, &newTitle);
+                displayList(myliste);
+            }
+            if (functionSelection == 7){
+                hardFillLinked(&myliste);
+                char input[100];
+                printf("Enter a value to compare with :");
+                Data val = getInput(type, input);
+                printf("1 if value exists 0 otherwise : %d",existsInDataframe(myliste, val));
+            }
+            if (functionSelection == 8){
+                hardFillLinked(&myliste);
+                int lineNumber, columnNumber;
+                printf("Enter number of lines : ");
+                scanf("%d", &lineNumber);
+                printf("Enter number of columns : ");
+                scanf("%d", &columnNumber);
+                accessValueAtIndex(myliste, lineNumber, columnNumber);
+                displayList(myliste);
+            }
+            if (functionSelection == 9){
+                hardFillLinked(&myliste);
+                int lineNumber, columnNumber;
+                printf("Enter number of lines : ");
+                scanf("%d", &lineNumber);
+                printf("Enter number of columns : ");
+                scanf("%d", &columnNumber);
+                replaceValueAtIndex(myliste, lineNumber, columnNumber);
+                displayList(myliste);
+            }
+        }
+        if (category == 2){
+            printf("displayList : 1\ndisplayLinkedLinesWithLimit : 2\ndisplayLinkedColumnsWithLimit : 3\ndisplayColumnsNames : 4\n");
+            scanf("%d", &functionSelection);
+            if (functionSelection == 1){
+                hardFillLinked(&myliste);
+                displayList(myliste);
+            }
+            if (functionSelection == 2){
+                hardFillLinked(&myliste);
+                char input[100];
+                printf("Enter a value to compare with :");
+                Data val = getInput(type, input);
+                displayLinkedLinesWithLimit(myliste, val);
+            }
+            if (functionSelection == 3){
+                hardFillLinked(&myliste);
+                char titleL;
+                printf("Enter a title :");
+                scanf("%s", title);
+                displayLinkedColumnsWithLimit(myliste, title);
+            }
+            if (functionSelection == 4){
+                hardFillLinked(&myliste);
+                displayColumnsNames(myliste);
+            }
+        }
+        if (category == 3){
+            printf("numberOfLines : 1\nnumberOfColumns : 2\nnumberOfCellsEqualToVal : 3\nnumberOfCellsUnderVal : 4\nnumberOfCellsAboveVal : 5\n");
+            scanf("%d", &functionSelection);
+            if (functionSelection == 1){
+                hardFillLinked(&myliste);
+                printf("There are %d lines", numberOfLines(myliste));
+            }
+            if (functionSelection == 2){
+                hardFillLinked(&myliste);
+                printf("There are %d columns", numberOfColumns(myliste));
+            }
+            if (functionSelection == 3){
+                hardFillLinked(&myliste);
+                char input[100];
+                printf("Enter a value to compare with :");
+                Data val = getInput(type, input);
+                printf("There are %d cells equal to val", numberOfCellsEqualToVal(myliste, val));
+            }
+            if (functionSelection == 4){
+                hardFillLinked(&myliste);
+                char input[100];
+                printf("Enter a value to compare with :");
+                Data val = getInput(type, input);
+                printf("There are %d cells equal to val", numberOfCellsUnderVal(myliste, val));
+            }
+            if (functionSelection == 5){
+                hardFillLinked(&myliste);
+                char input[100];
+                printf("Enter a value to compare with :");
+                Data val = getInput(type, input);
+                printf("There are %d cells equal to val", numberOfCellsAboveVal(myliste, val));
+            }
+
         }
     }
     return 0;
+}
+
+Data getInput(int type, char *input) {
+    fflush(stdin);
+    fgets(input, 100, stdin);
+    type = get_type(input);
+    Data val;
+    switch (type) {
+        case 1:
+            val.type = FLOAT_TYPE;
+            float resultat_f = atof(input);
+            val.value.float_type = resultat_f;
+            break;
+        case 2:
+            val.type = INT_TYPE;
+            int resultat_i = atoi(input);
+            val.value.int_type = resultat_i;
+            break;
+        case 3:
+            val.type = CHAR_TYPE;
+            val.value.char_type = input[0];
+            //A changer
+            break;
+        default:
+            val.value.char_type = ' ';
+    }
+    return val;
 }
 

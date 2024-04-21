@@ -216,7 +216,7 @@ void removeRowFromDataFrame(Liste liste, int indexToRemove) {
         if (temp->addressColumn->LOGICAL_SIZE == 0) {
             printf("Empty \n");
         } else {
-            if (indexToRemove>=temp->addressColumn->LOGICAL_SIZE){
+            if (indexToRemove<=temp->addressColumn->LOGICAL_SIZE){
                 remove_element(temp->addressColumn->data, indexToRemove, temp->addressColumn->LOGICAL_SIZE);
                 temp->addressColumn->LOGICAL_SIZE-=1;
                 temp->addressColumn->data = (Data*)realloc(temp->addressColumn->data, temp->addressColumn->PHYSICAL_SIZE * sizeof(Data));
@@ -273,11 +273,13 @@ int existsInDataframe(Liste liste, Data valToCompare){
     int isFound = 0;
     while (temp != NULL) {
         for (int val = 0; val < temp->addressColumn->LOGICAL_SIZE; val++){
-            if (compareValues(&(temp->addressColumn->data[val]), &valToCompare) == 0){
-                isFound = 1;
+            if (isSameType(&(temp->addressColumn->data[val]), &valToCompare)){
+                if (compareValues(&(temp->addressColumn->data[val]), &valToCompare) == 0){
+                    isFound = 1;
+                }
             }
         }
-
+        temp = temp->next;
     }
     return isFound;
 }
@@ -425,4 +427,64 @@ int numberOfCellsAboveVal(Liste liste, Data valToCompare){
         temp = temp->next;
     }
     return cpt;
+}
+
+void hardFillLinked(Liste* liste){
+    Data int_test1, int_test2, int_test3, char_test1, char_test2, char_test3,float_test1,float_test2,float_test3;
+    int_test1.type = INT_TYPE;
+    int_test1.value.int_type = 1;
+    int_test2.type = INT_TYPE;
+    int_test2.value.int_type = 2;
+    int_test3.type = INT_TYPE;
+    int_test3.value.int_type = 3;
+    char_test1.type = CHAR_TYPE;
+    char_test1.value.char_type = 'a';
+    char_test2.type = CHAR_TYPE;
+    char_test2.value.char_type = 'b';
+    char_test3.type = CHAR_TYPE;
+    char_test3.value.char_type = 'c';
+    float_test1.type = FLOAT_TYPE;
+    float_test1.value.float_type = 3.14;
+    float_test2.type = FLOAT_TYPE;
+    float_test2.value.float_type = 2.71;
+    float_test3.type = FLOAT_TYPE;
+    float_test3.value.float_type = 0.1;
+    for (int i=0; i<3;i++){
+        char title[20] = "Test ";
+        if (i == 0){
+            strcat(title, "int");
+        }
+        if (i == 1){
+            strcat(title, "char");
+        }
+        if (i == 2){
+            strcat(title, "float");
+        }
+        Cell* newCell = makeCell(title);
+        if (i==0){
+            insert_value(newCell->addressColumn, int_test1);
+            insert_value(newCell->addressColumn, int_test2);
+            insert_value(newCell->addressColumn, int_test3);
+        }
+        if (i==1){
+            insert_value(newCell->addressColumn, char_test1);
+            insert_value(newCell->addressColumn, char_test2);
+            insert_value(newCell->addressColumn, char_test3);
+        }
+        if (i==2){
+            insert_value(newCell->addressColumn, float_test1);
+            insert_value(newCell->addressColumn, float_test2);
+            insert_value(newCell->addressColumn, float_test3);
+        }
+        if (*liste == NULL){
+            *liste = newCell;
+        } else{
+            Cell* tempCell = *liste;
+            while (tempCell->next !=NULL){
+                tempCell = tempCell->next;
+            }
+            tempCell->next = newCell;
+        }
+    }
+
 }

@@ -15,6 +15,7 @@ typedef Cell* Liste;
 Cell* makeCell(char *title);
 Liste inputLinkedList(int size, Liste *myliste);
 void fillList(char* title, Liste* liste); //fill the list
+void hardFillLinked(Liste* liste);
 void displayList(Liste liste); //display dataframe
 void display(const Cell *temp); //display data of column (called in displayList)
 void displayLinkedLinesWithLimit(Liste liste, Data limit);
