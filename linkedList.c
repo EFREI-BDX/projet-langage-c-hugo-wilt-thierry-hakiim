@@ -26,7 +26,6 @@ void fillList(char* title, Liste* liste) {
     Cell* newCell = makeCell(title);
     int status, type;
     char* endPtr, str;
-
     printf("Enter number of values :");
     scanf("%s", &str);
     long numberOfVal = strtol(&str, &endPtr, 10);

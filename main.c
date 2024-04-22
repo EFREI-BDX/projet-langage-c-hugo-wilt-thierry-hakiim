@@ -51,7 +51,7 @@ int main() {
             }
             print_col(mycol);
         }
-        Data int_test, int_test2, int_test3, char_test1, char_test2, float_test;
+        Data int_test, int_test2, int_test3, char_test1, char_test2, float_test, string_test;
         int_test.type = INT_TYPE;
         int_test.value.int_type = 1;
         int_test2.type = INT_TYPE;
@@ -64,15 +64,19 @@ int main() {
         char_test2.value.char_type = 'b';
         float_test.type = FLOAT_TYPE;
         float_test.value.float_type = 3.14;
+        string_test.type = STRING_TYPE;
+        strcpy(&(string_test.value.string_type), "Test");
         insert_value(mycol, int_test);
         insert_value(mycol, char_test1);
         insert_value(mycol, int_test2);
         insert_value(mycol, char_test2);
         insert_value(mycol, int_test3);
         insert_value(mycol, float_test);
+        insert_value(mycol, string_test.value.string_type);
         if (functionSelection == 3){
             print_col(mycol);
             delete_column(&mycol);
+            printf("Column was deleted");
         }
         if (functionSelection == 4){
             print_col(mycol);
@@ -96,6 +100,9 @@ int main() {
                     break;
                 case DOUBLE_TYPE :
                     printf("%lf\n",val.value.double_type);
+                    break;
+                case STRING_TYPE :
+                    printf("%s\n",&(val.value.string_type));
                     break;
                 default :
                     printf("ERROR : unknown type.\n");
