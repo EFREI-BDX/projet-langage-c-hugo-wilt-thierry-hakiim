@@ -12,8 +12,10 @@ typedef struct Cell{
 } Cell;
 
 typedef Cell* Liste;
+#define MAX_TITLE_NAME_SIZE 50
+
 Cell* makeCell(char *title);
-Liste inputLinkedList(int size, Liste *myliste);
+Liste *inputLinkedList(int size, Liste *myliste);
 void fillList(char* title, Liste* liste); //fill the list
 void hardFillLinked(Liste* liste);
 void displayList(Liste liste); //display dataframe
@@ -25,8 +27,8 @@ void displayColumns(char* title, const Cell *temp);
 void addRowToDataFrame(Liste liste);
 void removeRowFromDataFrame(Liste liste, int indexToRemove);
 void remove_element(Data *data, int index, int array_length);
-void removeColumnFromDataFrame(Liste* liste, char* title);
-void renamedColumn(Liste* liste, char* oldTitle, char* newTitle);
+void removeColumnFromDataFrame(Liste* liste, char* titleToRemove);
+void renameColumn(Liste* liste, char* oldTitle, char* newTitle);
 int existsInDataframe(Liste liste, Data valToCompare);
 void accessValueAtIndex(Liste liste, int lineNumber, int columnNumber);
 void replaceValueAtIndex(Liste liste, int lineNumber, int columnNumber);

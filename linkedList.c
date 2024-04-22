@@ -12,29 +12,33 @@ Cell* makeCell(char *title) {
     return newCell;
 }
 
-Liste inputLinkedList(int size, Liste *myliste) {
-    char *title = (char*) malloc((strlen(title) + 1) * sizeof(char));
+Liste *inputLinkedList(int size, Liste *myliste) {
     for (int i=0; i<size;i++){
+        char *title = (char*) malloc(MAX_TITLE_NAME_SIZE * sizeof(char));
         printf("Enter a title : ");
-        scanf(" %s", title);
+        scanf("%s", title);
         fillList(title, myliste);
     }
-    return (*myliste);
+    return myliste;
 }
 
 void fillList(char* title, Liste* liste) {
     Cell* newCell = makeCell(title);
-    int status, type;
-    char* endPtr, str;
+    int status, type, typeOfInput, numberOfValues;
     printf("Enter number of values :");
-    scanf("%s", &str);
-    long numberOfVal = strtol(&str, &endPtr, 10);
-    for( int j= 0; j<numberOfVal;j++){
+    scanf("%d", &numberOfValues);
+    char inputType[20];
+    printf("Enter type : ");
+    scanf("%s", inputType);
+    typeOfInput = get_type2(inputType);
+    for( int j= 0; j<numberOfValues;j++){
         char input[100];
-        printf("Enter a value to insert :");
-        fflush(stdin);
-        fgets(input, 100, stdin);
-        type = get_type(input);
+        do {
+            printf("Enter a value to insert :");
+            fflush(stdin);
+            fgets(input, 100, stdin);
+            type = get_type(input);
+        } while( type!= typeOfInput);
         Data val;
         switch (type) {
             case 1:
@@ -233,14 +237,14 @@ void remove_element(Data *data, int index, int array_length)
 }
 
 
-void removeColumnFromDataFrame(Liste* liste, char* title) {
+void removeColumnFromDataFrame(Liste* liste, char* titleToRemove) {
     if (*liste == NULL) {
         printf("Empty list \n");
         return;
     }
     Cell* temp = *liste;
     Cell* previous = NULL;
-    while (temp != NULL && strcmp(temp->addressColumn->title, title) != 0) {
+    while (temp != NULL && strcmp(temp->addressColumn->title, titleToRemove) != 0) {
         previous = temp;
         temp = temp->next;
     }
@@ -257,7 +261,7 @@ void removeColumnFromDataFrame(Liste* liste, char* title) {
     printf("Executed order 66 successfully\n");
 }
 
-void renamedColumn(Liste* liste, char* oldTitle, char* newTitle){
+void renameColumn(Liste* liste, char* oldTitle, char* newTitle){
     Cell* temp = *liste;
     while (temp != NULL) {
         if (strcmp(temp->addressColumn->title, oldTitle) == 0){
@@ -449,7 +453,7 @@ void hardFillLinked(Liste* liste){
     float_test3.type = FLOAT_TYPE;
     float_test3.value.float_type = 0.1;
     for (int i=0; i<3;i++){
-        char title[20] = "Test ";
+        char title[20] = "Test-";
         if (i == 0){
             strcat(title, "int");
         }

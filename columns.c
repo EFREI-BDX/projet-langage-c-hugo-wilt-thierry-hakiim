@@ -180,6 +180,22 @@ int get_type(char* input){
 }
 
 
+int get_type2(char* input){
+    if (strcmp(input, "Float") == 0) {
+        return 1;
+    }
+    if (strcmp(input, "Int") == 0) {
+        return 2;
+    }
+    if (strcmp(input, "Char") == 0) {
+        return 3;
+    }
+    if (strcmp(input, "Double") == 0) {
+        return 4;
+    }
+    return 0;
+}
+
 
 
 void hardFill(COLUMN** array){
