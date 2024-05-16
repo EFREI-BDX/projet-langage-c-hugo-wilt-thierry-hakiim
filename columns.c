@@ -229,3 +229,49 @@ void hardFill(COLUMN** array){
 
 
 
+COLUMN *createcolumnPart2(DataType type, char *title){
+    COLUMN *newColumn= (COLUMN*) malloc( REALOC_SIZE* sizeof(COLUMN));
+    newColumn->title = (char*) malloc((strlen(title) + 1) * sizeof(char));
+    strcpy(newColumn->title, title);
+    newColumn->PHYSICAL_SIZE = REALOC_SIZE;
+    newColumn->LOGICAL_SIZE = 0;
+    newColumn->data = (Data*) malloc( REALOC_SIZE* sizeof(Data));
+    newColumn->typeOfData = type;
+    newColumn->index = NULL;
+    return newColumn;
+}
+
+
+int insertvaluePart2(COLUMN *column, void *value){
+    if(column->LOGICAL_SIZE==0 ||column->LOGICAL_SIZE==column->PHYSICAL_SIZE){
+        if(column->LOGICAL_SIZE==0){
+            column->data=(Data*)malloc((column->LOGICAL_SIZE)+REALOC_SIZE*sizeof(Data));
+            column->data[column->LOGICAL_SIZE]=value;
+        }else{
+            if(column->LOGICAL_SIZE==column->PHYSICAL_SIZE) {
+                column->data = realloc(column, (column->PHYSICAL_SIZE + REALOC_SIZE) * sizeof(Data));
+                column->data[column->LOGICAL_SIZE] = value;
+                column->PHYSICAL_SIZE += REALOC_SIZE;
+            }
+        }
+        column->LOGICAL_SIZE++;
+        return 1;
+    }else{
+        if((column->LOGICAL_SIZE!=0 && column->LOGICAL_SIZE!=column->PHYSICAL_SIZE)){
+            column->data[column->LOGICAL_SIZE] = value;
+            column->LOGICAL_SIZE++;
+            return 1;
+
+        }else{
+            return 0;
+        }
+    }
+}
+
+void deletecolumnPart2(COLUMN **col){
+    free((*col)->data);
+    free((*col)->index);
+    free((*col)->title);
+    free(*col);
+}
+

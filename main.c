@@ -15,6 +15,7 @@ int main() {
         scanf("%d", &functionSelection);
         COLUMN *mycol = create_column("Test"); //for most tests
         if (functionSelection == 1){
+            printf("Enter a title : ");
             scanf("%s", title);
             COLUMN *mycolC = create_column(title);
             print_col(mycolC);
@@ -249,6 +250,10 @@ int main() {
             }
 
         }
+    } if (partSelection == 3){
+        COLUMN *mycol = createcolumnPart2(CHAR_TYPE, "My Column");
+
+
     }
     return 0;
 }

@@ -30,15 +30,14 @@ typedef struct {
 }Data;
 
 
-
 typedef struct {
     char* title;
     int PHYSICAL_SIZE;
     int LOGICAL_SIZE;
     Data* data;
+    DataType typeOfData;
+    unsigned long long int *index;
 } COLUMN;
-
-typedef COLUMN* tableau;
 
 COLUMN* create_column(char* title);
 int insert_value(COLUMN* column, Data value);
@@ -50,21 +49,12 @@ int numberOfValuesAboveSearchValue(COLUMN* col,Data searchValue);
 int numberOfValuesUnderSearchValue(COLUMN* col,Data searchValue);
 int isSameType(Data* value1, Data* value2);
 int compareValues(Data* value1, Data* value2);
-
-
-
 int get_type(char* input);
 int get_type2(char* input);
-COLUMN** createEmptyCDataframe(int size);
-void fillArray(COLUMN** array, int size);
-void displayDataFrame(COLUMN** array, int size);
-void hardFill(COLUMN** array);
-void displayLinesWithLimit(COLUMN** array, int size, Data limit);
-void displayColumnsWithLimit(COLUMN** array, int size, char *title);
-void addColumn(COLUMN*** array, int* size_ptr, char* title);
 
-
-
-
+COLUMN *createcolumnPart2(DataType type, char *title);
+int insertvaluePart2(COLUMN *column, void *value);
+void deletecolumnPart2(COLUMN **col);
+void convert_value(COLUMN *col, unsigned long long int i, char *str, int size);
 
 #endif //PROJET_LANGAGE_C_COLUMNS_H
