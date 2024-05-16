@@ -66,7 +66,7 @@ int main() {
         float_test.type = FLOAT_TYPE;
         float_test.value.float_type = 3.14;
         string_test.type = STRING_TYPE;
-        strcpy(&(string_test.value.string_type), "Test");
+        strcpy((string_test.value.string_type), "Test");
         insert_value(mycol, int_test);
         insert_value(mycol, char_test1);
         insert_value(mycol, int_test2);
@@ -103,7 +103,7 @@ int main() {
                     printf("%lf\n",val.value.double_type);
                     break;
                 case STRING_TYPE :
-                    printf("%s\n",&(val.value.string_type));
+                    printf("%s\n",(val.value.string_type));
                     break;
                 default :
                     printf("ERROR : unknown type.\n");
@@ -251,8 +251,12 @@ int main() {
 
         }
     } if (partSelection == 3){
-        COLUMN *mycol = createcolumnPart2(CHAR_TYPE, "My Column");
-
+        COLUMN *mycol = createcolumnPart2(INT_TYPE, "My Column");
+        Data val;
+        val.type = INT_TYPE;
+        val.value.int_type = 31;
+        mycol->data[0] = val;
+        printcolPart2(mycol);
 
     }
     return 0;

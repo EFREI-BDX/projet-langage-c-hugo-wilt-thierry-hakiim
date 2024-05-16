@@ -242,7 +242,7 @@ COLUMN *createcolumnPart2(DataType type, char *title){
 }
 
 
-int insertvaluePart2(COLUMN *column, void *value){
+/*int insertvaluePart2(COLUMN *column, void *value){
     if(column->LOGICAL_SIZE==0 ||column->LOGICAL_SIZE==column->PHYSICAL_SIZE){
         if(column->LOGICAL_SIZE==0){
             column->data=(Data*)malloc((column->LOGICAL_SIZE)+REALOC_SIZE*sizeof(Data));
@@ -266,12 +266,50 @@ int insertvaluePart2(COLUMN *column, void *value){
             return 0;
         }
     }
-}
+}*/
 
 void deletecolumnPart2(COLUMN **col){
     free((*col)->data);
     free((*col)->index);
     free((*col)->title);
     free(*col);
+}
+
+void convert_value(COLUMN *col, unsigned long long int i, char *str, int size){
+    switch(col->data[i].type){
+        case UINT_TYPE :
+            itoa(- col->data[i].value.int_type, str, size);
+            break;
+        case INT_TYPE :
+            itoa(col->data[i].value.int_type, str, size);
+            break;
+        case CHAR_TYPE :
+            strcpy(str, &col->data[i].value.char_type);
+            break;
+        case FLOAT_TYPE :
+            sprintf(str,"%f", col->data[i].value.float_type);
+            break;
+        case DOUBLE_TYPE :
+            sprintf(str, "%lf", col->data[i].value.double_type);
+            break;
+        case STRING_TYPE :
+            strcpy(str,col->data[i].value.string_type);
+            break;
+        case STRUCT_TYPE :
+            strcpy(str, "NULL");
+            break;
+        default :
+            printf("ERROR : unknown type.\n");
+            break;
+    }
+}
+
+
+void printcolPart2(COLUMN* col){
+    for (int i = 0; i<col->LOGICAL_SIZE; i++){
+        char *str = malloc(sizeof(col->data[i].value));
+        convert_value(col, i, str, 20);
+        printf("%s", str);
+    }
 }
 

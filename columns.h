@@ -16,16 +16,18 @@ typedef enum {
     FLOAT_TYPE,
     DOUBLE_TYPE,
     STRING_TYPE,
+    STRUCT_TYPE,
 }DataType;
 typedef struct {
     DataType type;
     union {
-        unsigned unsigned_type;
-        int int_type;
+        unsigned int uint_type;
+        signed int int_type;
         char char_type;
         float float_type;
         double double_type;
-        char string_type;
+        char* string_type;
+        void* struct_type;
     }value;
 }Data;
 
@@ -56,5 +58,6 @@ COLUMN *createcolumnPart2(DataType type, char *title);
 int insertvaluePart2(COLUMN *column, void *value);
 void deletecolumnPart2(COLUMN **col);
 void convert_value(COLUMN *col, unsigned long long int i, char *str, int size);
+void printcolPart2(COLUMN* col);
 
 #endif //PROJET_LANGAGE_C_COLUMNS_H
