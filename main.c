@@ -240,13 +240,13 @@ int main() {
                 hardFillLinked(&myliste);
                 printf("Enter a value to compare with :");
                 Data val = getInput(type, input);
-                printf("There are %d cells equal to val", numberOfCellsUnderVal(myliste, val));
+                printf("There are %d cells under val", numberOfCellsUnderVal(myliste, val));
             }
             if (functionSelection == 5){
                 hardFillLinked(&myliste);
                 printf("Enter a value to compare with :");
                 Data val = getInput(type, input);
-                printf("There are %d cells equal to val", numberOfCellsAboveVal(myliste, val));
+                printf("There are %d cells above val", numberOfCellsAboveVal(myliste, val));
             }
 
         }
@@ -288,13 +288,22 @@ Data getInput(int type, char *input) {
 }*/
 int main(){
     char str[5];
-    COLUMN *mycol = createcolumnPart2(CHAR_TYPE, "Column 1");
-    char a ='A', c = 'C';
+    COLUMN *mycol = createcolumnPart2(INT_TYPE, "My column");
+    int a = 52, b = 44, c = 15, d = 18, e = 15, f = 15, g =12, h = 3;
+    char k = 'a';
     insertvaluePart2(mycol, &a);
-    insertvaluePart2(mycol,NULL);
+    insertvaluePart2(mycol, &b);
     insertvaluePart2(mycol, &c);
-    print_col( mycol);
+    insertvaluePart2(mycol, &d);
+    insertvaluePart2(mycol, &e);
+    insertvaluePart2(mycol, &f);
+    insertvaluePart2(mycol, &g);
+    insertvaluePart2(mycol, &h);
+    insertvaluePart2(mycol, &k);
+    print_col(mycol);
+    printf("%d ", occurrencePart2(mycol, &k));
+    printf("%d ", numberOfValuesAboveSearchValuePart2(mycol, &k));
+    printf("%d\n", numberOfValuesUnderSearchValuePart2(mycol, &k));
+    printValueAtIndex(mycol, 3);
     return 0;
-
-    /*pushing state*/
 }
