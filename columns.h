@@ -85,5 +85,5 @@ void deletecolumnPart2(COLUMN **col);
 void convert_value(COLUMN *col, unsigned long long int i, char *str, int size);
 
 
-
+/*pushing state*/
 #endif //PROJET_LANGAGE_C_COLUMNS_H

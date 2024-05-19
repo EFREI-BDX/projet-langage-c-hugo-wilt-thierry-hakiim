@@ -298,4 +298,5 @@ int main(){
     printf("%s \n", str);
     deletecolumnPart2(&mycol);
     return 0;
+    /*pushing state*/
 }
