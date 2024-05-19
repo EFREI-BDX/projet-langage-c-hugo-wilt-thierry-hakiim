@@ -83,6 +83,7 @@ COLUMN *createcolumnPart2(ENUM_TYPE type, char *title);
 int insertvaluePart2(COLUMN *column, void *type);
 void deletecolumnPart2(COLUMN **col);
 void convert_value(COLUMN *col, unsigned long long int i, char *str, int size);
+void print_col(COLUMN* col);
 
 
 /*pushing state*/

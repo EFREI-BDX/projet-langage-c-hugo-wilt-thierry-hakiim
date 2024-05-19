@@ -288,15 +288,13 @@ Data getInput(int type, char *input) {
 }*/
 int main(){
     char str[5];
-    COLUMN *mycol = createcolumnPart2(INT_TYPE, "My column");
-    int a = 52, b = 44, c = 15, d = 18;
+    COLUMN *mycol = createcolumnPart2(CHAR_TYPE, "Column 1");
+    char a ='A', c = 'C';
     insertvaluePart2(mycol, &a);
-    insertvaluePart2(mycol, &b);
+    insertvaluePart2(mycol,NULL);
     insertvaluePart2(mycol, &c);
-    insertvaluePart2(mycol, &d);
-    convert_value(mycol, 2, str, 5);
-    printf("%s \n", str);
-    deletecolumnPart2(&mycol);
+    print_col( mycol);
     return 0;
+
     /*pushing state*/
 }

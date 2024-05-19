@@ -267,39 +267,42 @@ int insertvaluePart2(COLUMN *column, void *value){
         return 0; // column->data has not been allocated memory
     }
     column->data[column->LOGICAL_SIZE]=newData;
-
-    switch(column->column_type){
-        case UINT_TYPE:
-            column->data[column->LOGICAL_SIZE]->uint_type = *((unsigned int *)value);
-            break;
-        case INT_TYPE:
-            column->data[column->LOGICAL_SIZE]->int_type = *((int *)value);
-            break;
-        case CHAR_TYPE:
-            column->data[column->LOGICAL_SIZE]->char_type = *((char *)value);
-            break;
-        case FLOAT_TYPE:
-            column->data[column->LOGICAL_SIZE]->float_type = *((float *)value);
-            break;
-        case DOUBLE_TYPE:
-            column->data[column->LOGICAL_SIZE]->double_type = *((double *)value);
-            break;
-        case STRING_TYPE:
-            column->data[column->LOGICAL_SIZE]->string_type = strdup((char *)value);
-            if (column->data[column->LOGICAL_SIZE]->string_type == NULL) {
+    if (value !=NULL) {
+        switch (column->column_type) {
+            case UINT_TYPE:
+                column->data[column->LOGICAL_SIZE]->uint_type = *((unsigned int *) value);
+                break;
+            case INT_TYPE:
+                column->data[column->LOGICAL_SIZE]->int_type = *((int *) value);
+                break;
+            case CHAR_TYPE:
+                column->data[column->LOGICAL_SIZE]->char_type = *((char *) value);
+                break;
+            case FLOAT_TYPE:
+                column->data[column->LOGICAL_SIZE]->float_type = *((float *) value);
+                break;
+            case DOUBLE_TYPE:
+                column->data[column->LOGICAL_SIZE]->double_type = *((double *) value);
+                break;
+            case STRING_TYPE:
+                column->data[column->LOGICAL_SIZE]->string_type = strdup((char *) value);
+                if (column->data[column->LOGICAL_SIZE]->string_type == NULL) {
+                    free(column->data[column->LOGICAL_SIZE]);
+                    column->data[column->LOGICAL_SIZE] = NULL;
+                    return 0;
+                }
+                break;
+            case STRUCT_TYPE:
+                column->data[column->LOGICAL_SIZE]->struct_type = value;
+                break;
+            default:
+                printf("undefined type ");
                 free(column->data[column->LOGICAL_SIZE]);
                 column->data[column->LOGICAL_SIZE] = NULL;
                 return 0;
-            }
-            break;
-        case STRUCT_TYPE:
-            column->data[column->LOGICAL_SIZE]->struct_type = value;
-            break;
-        default:
-            printf("undefined type ");
-            free(column->data[column->LOGICAL_SIZE]);
-            column->data[column->LOGICAL_SIZE] = NULL;
-            return 0;
+        }
+    }else{
+        column->data[column->LOGICAL_SIZE] = NULL;
     }
     column->LOGICAL_SIZE++;
     return 1;
@@ -360,8 +363,23 @@ void convert_value(COLUMN *col, unsigned long long int i, char *str, int size){
             printf("Undefined type encountered\n");
             break;
     }
-    /*pushing state*/
-
+}
+void print_col(COLUMN* col){
+    if(col==NULL){
+        printf("The column is NULL");
+        return;
+    }
+    printf("Title: %s\n",col->title);
+    char string[REALOC_SIZE];
+    for(unsigned long long int  i=0;i<col->LOGICAL_SIZE;i++){
+        printf("[%llu] ", i);
+        if(col->data[i]==NULL){
+            printf("NULL\n");
+        }else{
+            convert_value(col,i,string,sizeof(string));
+            printf("%s\n",string);
+        }
+    }
 }
 
 
