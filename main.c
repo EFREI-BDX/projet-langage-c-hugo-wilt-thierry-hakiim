@@ -297,4 +297,5 @@ int main(){
     convert_value(mycol, 2, str, 5);
     printf("%s \n", str);
     deletecolumnPart2(&mycol);
+    return 0;
 }

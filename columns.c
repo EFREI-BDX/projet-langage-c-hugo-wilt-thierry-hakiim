@@ -225,7 +225,7 @@ void hardFill(COLUMN** array){
         insert_value(array[i], int_test3);
 
     }
-}
+}*/
 
 
 
@@ -240,22 +240,33 @@ COLUMN *createcolumnPart2(ENUM_TYPE type, char *title){
     newColumn->column_type = type;
     newColumn->index = NULL;
     return newColumn;
-}*/
+}
 
 
 int insertvaluePart2(COLUMN *column, void *value){
-    if(column->LOGICAL_SIZE==column->PHYSICAL_SIZE) {
-        column->data = (COL_TYPE**)realloc(column->data, (column->PHYSICAL_SIZE + REALOC_SIZE) * sizeof(COL_TYPE));
-        if(column->data==NULL){
+    if(column->LOGICAL_SIZE == 0) {
+        column->data = (COL_TYPE**)malloc(REALOC_SIZE * sizeof(COL_TYPE*));
+        if(column->data == NULL) {
             return 0;
         }
+        column->PHYSICAL_SIZE = REALOC_SIZE;
+    } else if(column->LOGICAL_SIZE == column->PHYSICAL_SIZE) {
+        COL_TYPE **temp = (COL_TYPE**)realloc(column->data, (column->PHYSICAL_SIZE + REALOC_SIZE) * sizeof(COL_TYPE*));
+        if(temp == NULL) {
+            return 0;
+        }
+        column->data = temp;
         column->PHYSICAL_SIZE += REALOC_SIZE;
     }
 
-    column->data[column->LOGICAL_SIZE] = (COL_TYPE *)malloc(sizeof(COL_TYPE));
-    if (column->data[column->LOGICAL_SIZE] == NULL) {
+    COL_TYPE *newData= (COL_TYPE *)malloc(sizeof(COL_TYPE));
+    if (newData == NULL) {
         return 0;
     }
+    if(column->data == NULL) {
+        return 0; // column->data has not been allocated memory
+    }
+    column->data[column->LOGICAL_SIZE]=newData;
 
     switch(column->column_type){
         case UINT_TYPE:
@@ -294,7 +305,7 @@ int insertvaluePart2(COLUMN *column, void *value){
     return 1;
 }
 
-void deletecolumnpart2(COLUMN **col){
+void deletecolumnPart2(COLUMN **col){
     free((*col)->title);
     if((*col)->data != NULL){
         for(int i = 0; i < (*col)->LOGICAL_SIZE; i++){
