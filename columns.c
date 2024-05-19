@@ -515,21 +515,30 @@ void printValueAtIndex(COLUMN* col, unsigned long long index){
     printf("%s", str);
 }
 
-
-void printCol(COLUMN* col){
-    if(col==NULL){
+void printCol(COLUMN* col) {
+    if (col == NULL) {
         printf("The column is NULL");
         return;
     }
-    printf("Title: %s\n",col->title);
+    printf("Title: %s\n", col->title);
     char string[REALOC_SIZE];
-    for(unsigned long long int  i=0;i<col->LOGICAL_SIZE;i++){
+    for (unsigned long long int i = 0; i < col->LOGICAL_SIZE; i++) {
         printf("[%llu] ", i);
-        if(col->data[i]==NULL){
+        if (col->data[i] == NULL) {
             printf("NULL\n");
-        }else{
-            convertValue(col,i,string,sizeof(string));
-            printf("%s\n",string);
+        } else {
+            switch (col->column_type) {
+                case STRING_TYPE:
+                    if (col->data[i]->string_type == NULL) {
+                        printf("NULL\n");
+                    } else {
+                        printf("%s\n", col->data[i]->string_type);
+                    }
+                    break;
+                default:
+                    convertValue(col, i, string, sizeof(string));
+                    printf("%s\n", string);
+            }
         }
     }
 }
