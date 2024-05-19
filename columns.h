@@ -87,6 +87,7 @@ int occurrencePart2(COLUMN *col, void *value);
 int numberOfValuesAboveSearchValuePart2(COLUMN *col, void *value);
 int numberOfValuesUnderSearchValuePart2(COLUMN *col, void *value);
 void printValueAtIndex(COLUMN* col, unsigned long long index);
+void print_col(COLUMN* col);
 
 
 #endif //PROJET_LANGAGE_C_COLUMNS_H

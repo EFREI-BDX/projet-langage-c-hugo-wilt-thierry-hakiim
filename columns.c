@@ -514,3 +514,22 @@ void printValueAtIndex(COLUMN* col, unsigned long long index){
     convert_value(col, index, str, size);
     printf("%s", str);
 }
+
+
+void print_col(COLUMN* col){
+    if(col==NULL){
+        printf("The column is NULL");
+        return;
+    }
+    printf("Title: %s\n",col->title);
+    char string[REALOC_SIZE];
+    for(unsigned long long int  i=0;i<col->LOGICAL_SIZE;i++){
+        printf("[%llu] ", i);
+        if(col->data[i]==NULL){
+            printf("NULL\n");
+        }else{
+            convert_value(col,i,string,sizeof(string));
+            printf("%s\n",string);
+        }
+    }
+}

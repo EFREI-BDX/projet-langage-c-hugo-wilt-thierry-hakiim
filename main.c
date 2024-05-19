@@ -300,10 +300,7 @@ int main(){
     insertvaluePart2(mycol, &g);
     insertvaluePart2(mycol, &h);
     insertvaluePart2(mycol, &k);
-    for (int i=0; i<9;i++){
-        convert_value(mycol, i, str, 5);
-        printf("%s \n", str);
-    }
+    print_col(mycol);
     printf("%d ", occurrencePart2(mycol, &k));
     printf("%d ", numberOfValuesAboveSearchValuePart2(mycol, &k));
     printf("%d\n", numberOfValuesUnderSearchValuePart2(mycol, &k));
