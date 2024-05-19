@@ -3,10 +3,16 @@
 //
 
 #include "columns.h"
+#include <stdio.h>
+#include <math.h>
+#include <stdlib.h>
+#include <string.h>
 
 
-COLUMN *create_column(char* title){
-    COLUMN *newColumn= (COLUMN*) malloc( REALOC_SIZE* sizeof(COLUMN));;
+
+
+/*COLUMN* create_column(char* title){
+    COLUMN *newColumn= (COLUMN*) malloc( REALOC_SIZE* sizeof(COLUMN));
     newColumn->title = (char*) malloc((strlen(title) + 1) * sizeof(char));
     strcpy(newColumn->title, title);
     newColumn->PHYSICAL_SIZE = REALOC_SIZE;
@@ -51,18 +57,18 @@ void print_col(COLUMN* col){
     printf("%d\n", col->PHYSICAL_SIZE);
     printf("%d\n", col->LOGICAL_SIZE);
     for (int i =0; i<col->LOGICAL_SIZE;i++){
-        switch(col->data[i].type){
+        switch(col->data[i].value){
             case INT_TYPE :
-                printf("[%d] = %d  ",i, col->data[i].value.int_type);
+                printf("%d = %d  ",i, col->data[i].value.int_type);
                 break;
             case CHAR_TYPE :
-                printf("%c = %c",i,col->data[i].value.char_type);
+                printf("%d = %c",i,col->data[i].value.char_type);
                 break;
             case FLOAT_TYPE :
-                printf("%f = %f",i,col->data[i].value.float_type);
+                printf("%d = %f",i,col->data[i].value.float_type);
                 break;
             case DOUBLE_TYPE :
-                printf("%lf = %lf",i,col->data[i].value.double_type);
+                printf("%d = %lf",i,col->data[i].value.double_type);
                 break;
             default :
                 printf("ERROR : unknown type.\n");
@@ -114,9 +120,11 @@ int numberOfValuesUnderSearchValue(COLUMN* col,Data searchValue){
     }
     return cptValuesUnderSearchValue;
 }
+
 int isSameType(Data* value1, Data* value2){
     return (value1->type == value2->type);
 }
+
 int compareValues(Data* value1, Data* value2) {
     if (!isSameType(value1, value2)) {
         printf("Error: The two values are not of the same type.\n");
@@ -145,6 +153,203 @@ int compareValues(Data* value1, Data* value2) {
                 return -2;
         }
     }
+}
+
+
+int get_type(char* input){
+    double x;
+    int num;
+    char str[20] = "";
+    double tolerance = 1e-12;
+    if (sscanf(input, "%lf", &x) == 1) {
+        num = (int)x; // We cast to int.
+        if ( fabs(x - num)/x > tolerance ) {
+            //float
+            return 1;
+        } else {
+            //int
+            return 2;
+        }
+    } else if (sscanf(input, "%s", str) == 1) {
+        // string
+        return 3;
+    } else {
+        // error
+        return -1;
+    }
+}
+
+
+int get_type2(char* input){
+    if (strcmp(input, "Float") == 0) {
+        return 1;
+    }
+    if (strcmp(input, "Int") == 0) {
+        return 2;
+    }
+    if (strcmp(input, "Char") == 0) {
+        return 3;
+    }
+    if (strcmp(input, "Double") == 0) {
+        return 4;
+    }
+    return 0;
+}
+
+
+
+void hardFill(COLUMN** array){
+    for (int i = 0; i < 3; i++) {
+        //title
+        char title[10]= "Test";
+        title[4] = i;
+
+        array[i] = create_column(title);
+        //input
+        Data int_test, int_test2, int_test3, char_test, float_test;
+        int_test.type = INT_TYPE;
+        int_test.value.int_type = 1;
+        int_test2.type = INT_TYPE;
+        int_test2.value.int_type = 2;
+        int_test3.type = INT_TYPE;
+        int_test3.value.int_type = 3;
+        char_test.type = CHAR_TYPE;
+        char_test.value.char_type = 'e';
+        float_test.type = FLOAT_TYPE;
+        float_test.value.float_type = 3.1;
+
+        insert_value(array[i], int_test);
+        insert_value(array[i], float_test);
+        insert_value(array[i], int_test2);
+        insert_value(array[i], char_test);
+        insert_value(array[i], int_test3);
+
+    }
+}
+
+
+
+COLUMN *createcolumnPart2(ENUM_TYPE type, char *title){
+    COLUMN *newColumn= (COLUMN*) malloc( REALOC_SIZE* sizeof(COLUMN));
+    if (newColumn == NULL) {
+        return NULL;
+    }
+    newColumn->title = strdup(title);
+    newColumn->PHYSICAL_SIZE = REALOC_SIZE;
+    newColumn->LOGICAL_SIZE = 0;
+    newColumn->column_type = type;
+    newColumn->index = NULL;
+    return newColumn;
+}*/
+
+
+int insertvaluePart2(COLUMN *column, void *value){
+    if(column->LOGICAL_SIZE==column->PHYSICAL_SIZE) {
+        column->data = (COL_TYPE**)realloc(column->data, (column->PHYSICAL_SIZE + REALOC_SIZE) * sizeof(COL_TYPE));
+        if(column->data==NULL){
+            return 0;
+        }
+        column->PHYSICAL_SIZE += REALOC_SIZE;
+    }
+
+    column->data[column->LOGICAL_SIZE] = (COL_TYPE *)malloc(sizeof(COL_TYPE));
+    if (column->data[column->LOGICAL_SIZE] == NULL) {
+        return 0;
+    }
+
+    switch(column->column_type){
+        case UINT_TYPE:
+            column->data[column->LOGICAL_SIZE]->uint_type = *((unsigned int *)value);
+            break;
+        case INT_TYPE:
+            column->data[column->LOGICAL_SIZE]->int_type = *((int *)value);
+            break;
+        case CHAR_TYPE:
+            column->data[column->LOGICAL_SIZE]->char_type = *((char *)value);
+            break;
+        case FLOAT_TYPE:
+            column->data[column->LOGICAL_SIZE]->float_type = *((float *)value);
+            break;
+        case DOUBLE_TYPE:
+            column->data[column->LOGICAL_SIZE]->double_type = *((double *)value);
+            break;
+        case STRING_TYPE:
+            column->data[column->LOGICAL_SIZE]->string_type = strdup((char *)value);
+            if (column->data[column->LOGICAL_SIZE]->string_type == NULL) {
+                free(column->data[column->LOGICAL_SIZE]);
+                column->data[column->LOGICAL_SIZE] = NULL;
+                return 0;
+            }
+            break;
+        case STRUCT_TYPE:
+            column->data[column->LOGICAL_SIZE]->struct_type = value;
+            break;
+        default:
+            printf("undefined type ");
+            free(column->data[column->LOGICAL_SIZE]);
+            column->data[column->LOGICAL_SIZE] = NULL;
+            return 0;
+    }
+    column->LOGICAL_SIZE++;
+    return 1;
+}
+
+void deletecolumnpart2(COLUMN **col){
+    free((*col)->title);
+    if((*col)->data != NULL){
+        for(int i = 0; i < (*col)->LOGICAL_SIZE; i++){
+            switch((*col)->column_type){
+                case STRING_TYPE:
+                    free((*col)->data[i]->string_type);
+                    break;
+                default:
+                    printf("Undefined type encountered\n");
+                    break;
+            }
+            free((*col)->data[i]);
+
+
+        }
+        free((*col)->data);
+    }
+    free((*col)->index);
+    (*col)->index = NULL;
+
+    free(*col);
+}
+void convert_value(COLUMN *col, unsigned long long int i, char *str, int size){
+    if(i>=col->LOGICAL_SIZE){
+        printf("index out of range");
+        return;
+    }
+    switch(col->column_type){
+        case UINT_TYPE :
+            snprintf(str,size,"%u",*((unsigned int*)col->data[i]));
+            break;
+        case INT_TYPE :
+            snprintf(str,size,"%d",*(( int*)col->data[i]));
+            break;
+        case CHAR_TYPE:
+            snprintf(str,size,"%c",*((char*)col->data[i]));
+            break;
+        case FLOAT_TYPE:
+            snprintf(str,size,"%f",*((float*)col->data[i]));
+            break;
+        case DOUBLE_TYPE :
+            snprintf(str,size,"%lf",*((double*)col->data[i]));
+            break;
+        case STRING_TYPE :
+            strncpy(str, (char*)col->data[i], size);
+            str[size - 1] = '\0';
+            break;
+        case STRUCT_TYPE:
+            snprintf(str, size, "%p", col->data[i]->struct_type);
+            break;
+        default:
+            printf("Undefined type encountered\n");
+            break;
+    }
+
 }
 
 

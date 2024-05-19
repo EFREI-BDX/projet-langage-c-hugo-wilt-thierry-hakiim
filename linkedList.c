@@ -4,7 +4,7 @@
 
 #include "linkedList.h"
 
-// Liste chainée
+/*// Liste chainée
 Cell* makeCell(char *title) {
     Cell *newCell = (Cell*)malloc(sizeof(Cell));
     newCell->addressColumn = create_column(title);
@@ -486,4 +486,4 @@ void hardFillLinked(Liste* liste){
         }
     }
 
-}
+}*/

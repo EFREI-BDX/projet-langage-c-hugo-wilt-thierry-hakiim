@@ -6,7 +6,7 @@
 #define PROJET_LANGAGE_C_LINKEDLIST_H
 #include "columns.h"
 
-typedef struct Cell{
+/*typedef struct Cell{
     COLUMN* addressColumn;
     struct Cell* next;
 } Cell;
@@ -35,5 +35,5 @@ int numberOfLines(Liste liste);
 int numberOfColumns(Liste liste);
 int numberOfCellsEqualToVal(Liste liste, Data valToCompare);
 int numberOfCellsUnderVal(Liste liste, Data valToCompare);
-int numberOfCellsAboveVal(Liste liste, Data valToCompare);
+int numberOfCellsAboveVal(Liste liste, Data valToCompare);*/
 #endif //PROJET_LANGAGE_C_LINKEDLIST_H

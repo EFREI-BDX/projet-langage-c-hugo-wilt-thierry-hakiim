@@ -3,7 +3,7 @@
 #include "linkedList.h"
 
 
-Data getInput(int type, char *input);
+/*Data getInput(int type, char *input);
 
 int main() {
     int partSelection, functionSelection, type, numberOfValues, index, category, size;
@@ -15,6 +15,7 @@ int main() {
         scanf("%d", &functionSelection);
         COLUMN *mycol = create_column("Test"); //for most tests
         if (functionSelection == 1){
+            printf("Enter a title : ");
             scanf("%s", title);
             COLUMN *mycolC = create_column(title);
             print_col(mycolC);
@@ -72,7 +73,7 @@ int main() {
         insert_value(mycol, char_test2);
         insert_value(mycol, int_test3);
         insert_value(mycol, float_test);
-        insert_value(mycol, string_test.value.string_type);
+        //insert_value(mycol, string_test.value.string_type);
         if (functionSelection == 3){
             print_col(mycol);
             delete_column(&mycol);
@@ -127,8 +128,8 @@ int main() {
             scanf("%d", &functionSelection);
             if (functionSelection == 1){
                 size = 3;
-                Liste myliste2=NULL;
-                myliste = inputLinkedList(size, &myliste2);
+                Liste myliste2 = NULL;
+                inputLinkedList(size, &myliste2);
                 displayList(myliste2);
             }
             if (functionSelection == 2){
@@ -157,13 +158,13 @@ int main() {
             }
             if (functionSelection == 6){
                 hardFillLinked(&myliste);
-                char oldTitle, newTitle;
+                char oldTitle[20], newTitle[20];
                 printf("Enter old title : ");
-                scanf("%s", &oldTitle);
+                scanf("%s", oldTitle);
                 printf("Enter new title : ");
-                scanf("%s", &newTitle);
-                printf("\n%s %s\n", &oldTitle, &newTitle);
-                renamedColumn(&myliste,&oldTitle, &newTitle);
+                scanf("%s", newTitle);
+                printf("%s %s\n", oldTitle, newTitle);
+                //renameColumn(&myliste,oldTitle, newTitle);
                 displayList(myliste);
             }
             if (functionSelection == 7){
@@ -175,20 +176,20 @@ int main() {
             if (functionSelection == 8){
                 hardFillLinked(&myliste);
                 int lineNumber, columnNumber;
-                printf("Enter number of lines : ");
-                scanf("%d", &lineNumber);
-                printf("Enter number of columns : ");
+                printf("Enter column number : ");
                 scanf("%d", &columnNumber);
+                printf("Enter line number : ");
+                scanf("%d", &lineNumber);
                 accessValueAtIndex(myliste, lineNumber, columnNumber);
                 displayList(myliste);
             }
             if (functionSelection == 9){
                 hardFillLinked(&myliste);
                 int lineNumber, columnNumber;
-                printf("Enter number of lines : ");
-                scanf("%d", &lineNumber);
-                printf("Enter number of columns : ");
+                printf("Enter column number : ");
                 scanf("%d", &columnNumber);
+                printf("Enter line number : ");
+                scanf("%d", &lineNumber);
                 replaceValueAtIndex(myliste, lineNumber, columnNumber);
                 displayList(myliste);
             }
@@ -249,6 +250,13 @@ int main() {
             }
 
         }
+    } if (partSelection == 3){
+        COLUMN *mycol = createcolumnPart2(CHAR_TYPE, "My Column");
+        char a = 'A', c = 'C';
+        insertvaluePart2(mycol, &a);
+        insertvaluePart2(mycol, NULL);
+        insertvaluePart2(mycol, &c);
+
     }
     return 0;
 }
@@ -277,4 +285,16 @@ Data getInput(int type, char *input) {
             val.value.char_type = ' ';
     }
     return val;
+}*/
+int main(){
+    char str[5];
+    COLUMN *mycol = createcolumnPart2(INT_TYPE, "My column");
+    int a = 52, b = 44, c = 15, d = 18;
+    insertvaluePart2(mycol, &a);
+    insertvaluePart2(mycol, &b);
+    insertvaluePart2(mycol, &c);
+    insertvaluePart2(mycol, &d);
+    convert_value(mycol, 2, str, 5);
+    printf("%s \n", str);
+    deletecolumnPart2(&mycol);
 }
