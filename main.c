@@ -304,7 +304,7 @@ int main(){/*
     printf("%d ", numberOfValuesAboveSearchValuePart2(mycol, &k));
     printf("%d\n", numberOfValuesUnderSearchValuePart2(mycol, &k));
     printValueAtIndex(mycol, 3);*/
-    ENUM_TYPE cdftype [] = {INT_TYPE,CHAR_TYPE,STRING_TYPE};
+    ENUM_TYPE cdftype [] = {UINT_TYPE,CHAR_TYPE,STRING_TYPE};
     CDATAFRAME *cdf = createCdataframe(cdftype, 3);
     //printf("%d", getCdataframeColsSize(cdf));
     //hardFillCDataframe(cdf);
@@ -315,9 +315,10 @@ int main(){/*
     //printf("%d", valueExists(cdf, &a));
     //printNumberOfColumns(cdf);
     //printNumberOfRows(cdf);
-    occurrenceValInDataframe(cdf, &a);
-    int cpt2 = countValuesGreaterThan(cdf, &a);
-    printf("%d", cpt2);
+    int searchValue = 10;
+
+    int count = countValuesLesserThan(cdf, &searchValue);
+    printf("Number of values greater than %d: %d\n", searchValue, count);
     return 0;
 }
 

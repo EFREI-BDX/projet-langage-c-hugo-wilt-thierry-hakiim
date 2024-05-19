@@ -392,57 +392,70 @@ int occurrenceValInDataframe(CDATAFRAME *cdf, void* value) {
 }
 
 
+
+
 int countValuesGreaterThan(CDATAFRAME *cdf, void *value) {
-    if (cdf == NULL || cdf->head == NULL) {
-        printf("Empty CDATAFRAME\n");
+    if (cdf == NULL || cdf->head == NULL || value == NULL) {
+        printf("Empty CDATAFRAME or invalid value\n");
         return 0;
     }
     int count = 0;
     LNODE *current = cdf->head;
+    ENUM_TYPE valueType = determineType(value);
+
     while (current != NULL) {
         COLUMN *col = current->data;
-        for (unsigned int i = 0; i < col->LOGICAL_SIZE; i++) {
-            switch (col->column_type) {
-                case UINT_TYPE:
-                    if (*(unsigned int *)col->data[i] > *(unsigned int *)value) {
-                        count++;
-                    }
-                    break;
-                case INT_TYPE:
-                    if (*(int *)col->data[i] > *(int *)value) {
-                        count++;
-                    }
-                    break;
-                case CHAR_TYPE:
-                    if (*(char *)col->data[i] > *(char *)value) {
-                        count++;
-                    }
-                    break;
-                case FLOAT_TYPE:
-                    if (*(float *)col->data[i] > *(float *)value) {
-                        count++;
-                    }
-                    break;
-                case DOUBLE_TYPE:
-                    if (*(double *)col->data[i] > *(double *)value) {
-                        count++;
-                    }
-                    break;
-                case STRING_TYPE:
-                    if (strcmp((char*)col->data, (char *)value)>0){
-                        count++;
-                    }
-                    break;
-                case STRUCT_TYPE:
-                    break;
-                default:
-                    // Unknown type
-                    break;
-            }
+        if (col->column_type == valueType) {
+            count += numberOfValuesAboveSearchValuePart2(col, value);
         }
         current = current->next;
     }
     return count;
+}
+
+int countValuesLesserThan(CDATAFRAME *cdf, void *value) {
+    if (cdf == NULL || cdf->head == NULL || value == NULL) {
+        printf("Empty CDATAFRAME or invalid value\n");
+        return 0;
+    }
+    int count = 0;
+    LNODE *current = cdf->head;
+    ENUM_TYPE valueType = determineType(value);
+
+    while (current != NULL) {
+        COLUMN *col = current->data;
+        if (col->column_type == valueType) {
+            count += numberOfValuesUnderSearchValuePart2(col, value);
+        }
+        current = current->next;
+    }
+    return count;
+}
+
+
+
+ENUM_TYPE determineType(const void *value) {
+    if (value == NULL) {
+        return NULLVAL;
+    }
+    // This is a simplified approach; you may need a more complex type-determination logic
+    // if you have mixed-type data in your application.
+
+    // Dummy checks for example; adapt as necessary
+    if (*(unsigned int *)value == (unsigned int)*(unsigned int *)value) {
+        return UINT_TYPE;
+    } else if (*(int *)value == (int)*(int *)value) {
+        return INT_TYPE;
+    } else if (*(char *)value == (char)*(char *)value) {
+        return CHAR_TYPE;
+    } else if (*(float *)value == (float)*(float *)value) {
+        return FLOAT_TYPE;
+    } else if (*(double *)value == (double)*(double *)value) {
+        return DOUBLE_TYPE;
+    } else if (strcmp((char *)value, (char *)value) == 0) {
+        return STRING_TYPE;
+    }
+    return NULLVAL;
 }
 
 

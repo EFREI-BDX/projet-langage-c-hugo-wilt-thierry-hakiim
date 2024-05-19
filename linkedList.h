@@ -42,6 +42,8 @@ void printNumberOfRows(CDATAFRAME *cdf);
 void printNumberOfColumns(CDATAFRAME *cdf);
 int occurrenceValInDataframe(CDATAFRAME *cdf, void* value);
 int countValuesGreaterThan(CDATAFRAME *cdf, void *value);
+int countValuesLesserThan(CDATAFRAME *cdf, void *value);
+ENUM_TYPE determineType(const void *value);
 
 
 LIST *inputLinkedList(int size, LIST *myliste);
