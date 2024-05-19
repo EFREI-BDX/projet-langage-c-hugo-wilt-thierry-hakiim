@@ -8,7 +8,40 @@
 #include <stdlib.h>
 #include <string.h>
 #define REALOC_SIZE 256
+enum enum_type{
+    NULLVAL=1,
+    UINT_TYPE,
+    INT_TYPE,
+    CHAR_TYPE,
+    FLOAT_TYPE,
+    DOUBLE_TYPE,
+    STRING_TYPE,
+    STRUCT_TYPE,
+};
+typedef enum enum_type ENUM_TYPE;
 
+union column_type{
+    unsigned int uint_type;
+    signed int int_type;
+    char char_type;
+    float float_type;
+    double double_type;
+    char* string_type;
+    void* struct_type;
+};
+typedef union column_type COL_TYPE;
+
+struct column {
+    char *title;
+    unsigned int LOGICAL_SIZE;
+    unsigned int PHYSICAL_SIZE;
+    ENUM_TYPE column_type;
+    COL_TYPE **data;
+    unsigned long long int *index;
+};
+
+typedef struct column COLUMN;
+/* .................................
 typedef enum {
     UINT_TYPE,
     INT_TYPE,
@@ -32,14 +65,6 @@ typedef struct {
 }Data;
 
 
-typedef struct {
-    char* title;
-    int PHYSICAL_SIZE;
-    int LOGICAL_SIZE;
-    Data* data;
-    DataType typeOfData;
-    unsigned long long int *index;
-} COLUMN;
 
 COLUMN* create_column(char* title);
 int insert_value(COLUMN* column, Data value);
@@ -52,12 +77,16 @@ int numberOfValuesUnderSearchValue(COLUMN* col,Data searchValue);
 int isSameType(Data* value1, Data* value2);
 int compareValues(Data* value1, Data* value2);
 int get_type(char* input);
-int get_type2(char* input);
+int get_type2(char* input);*/
 
-COLUMN *createcolumnPart2(DataType type, char *title);
-int insertvaluePart2(COLUMN *column, void *value);
+COLUMN *createcolumnPart2(ENUM_TYPE type, char *title);
+int insertvaluePart2(COLUMN *column, void *type);
 void deletecolumnPart2(COLUMN **col);
 void convert_value(COLUMN *col, unsigned long long int i, char *str, int size);
-void printcolPart2(COLUMN* col);
+int occurrencePart2(COLUMN *col, void *value);
+int numberOfValuesAboveSearchValuePart2(COLUMN *col, void *value);
+int numberOfValuesUnderSearchValuePart2(COLUMN *col, void *value);
+void printValueAtIndex(COLUMN* col, unsigned long long index);
+
 
 #endif //PROJET_LANGAGE_C_COLUMNS_H
