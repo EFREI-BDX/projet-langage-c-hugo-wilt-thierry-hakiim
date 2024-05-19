@@ -13,7 +13,7 @@ typedef struct Cell{
 
 typedef Cell* Liste;
 #define MAX_TITLE_NAME_SIZE 50
-
+/*
 Cell* makeCell(char *title);
 Liste *inputLinkedList(int size, Liste *myliste);
 void fillList(char* title, Liste* liste); //fill the list
@@ -37,5 +37,5 @@ int numberOfLines(Liste liste);
 int numberOfColumns(Liste liste);
 int numberOfCellsEqualToVal(Liste liste, Data valToCompare);
 int numberOfCellsUnderVal(Liste liste, Data valToCompare);
-int numberOfCellsAboveVal(Liste liste, Data valToCompare);
+int numberOfCellsAboveVal(Liste liste, Data valToCompare);*/
 #endif //PROJET_LANGAGE_C_LINKEDLIST_H

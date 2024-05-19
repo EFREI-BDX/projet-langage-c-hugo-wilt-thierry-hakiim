@@ -290,6 +290,7 @@ int main(){
     char str[5];
     COLUMN *mycol = createcolumnPart2(INT_TYPE, "My column");
     int a = 52, b = 44, c = 15, d = 18, e = 15, f = 15, g =12, h = 3;
+    char k = 'a';
     insertvaluePart2(mycol, &a);
     insertvaluePart2(mycol, &b);
     insertvaluePart2(mycol, &c);
@@ -298,12 +299,14 @@ int main(){
     insertvaluePart2(mycol, &f);
     insertvaluePart2(mycol, &g);
     insertvaluePart2(mycol, &h);
-
-    convert_value(mycol, 2, str, 5);
-    printf("%s \n", str);
-    printf("%d ", occurrencePart2(mycol, &c));
-    printf("%d ", numberOfValuesAboveSearchValuePart2(mycol, &c));
-    printf("%d\n", numberOfValuesUnderSearchValuePart2(mycol, &c));
+    insertvaluePart2(mycol, &k);
+    for (int i=0; i<9;i++){
+        convert_value(mycol, i, str, 5);
+        printf("%s \n", str);
+    }
+    printf("%d ", occurrencePart2(mycol, &k));
+    printf("%d ", numberOfValuesAboveSearchValuePart2(mycol, &k));
+    printf("%d\n", numberOfValuesUnderSearchValuePart2(mycol, &k));
     printValueAtIndex(mycol, 3);
     return 0;
 }

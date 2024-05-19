@@ -3,7 +3,7 @@
 //
 
 #include "linkedList.h"
-
+/*
 // Liste chainée
 Cell* makeCell(char *title) {
     Cell *newCell = (Cell*)malloc(sizeof(Cell));
@@ -490,4 +490,4 @@ void hardFillLinked(Liste* liste){
         }
     }
 
-}
+*/
