@@ -11,7 +11,7 @@
 
 
 
-COLUMN* create_column(char* title){
+/*COLUMN* create_column(char* title){
     COLUMN *newColumn= (COLUMN*) malloc( REALOC_SIZE* sizeof(COLUMN));
     newColumn->title = (char*) malloc((strlen(title) + 1) * sizeof(char));
     strcpy(newColumn->title, title);
@@ -57,7 +57,7 @@ void print_col(COLUMN* col){
     printf("%d\n", col->PHYSICAL_SIZE);
     printf("%d\n", col->LOGICAL_SIZE);
     for (int i =0; i<col->LOGICAL_SIZE;i++){
-        switch(col->data[i].type){
+        switch(col->data[i].value){
             case INT_TYPE :
                 printf("%d = %d  ",i, col->data[i].value.int_type);
                 break;
@@ -227,89 +227,290 @@ void hardFill(COLUMN** array){
     }
 }
 
-
-
-COLUMN *createcolumnPart2(DataType type, char *title){
+*/
+COLUMN *createcolumnPart2(ENUM_TYPE type, char *title){
     COLUMN *newColumn= (COLUMN*) malloc( REALOC_SIZE* sizeof(COLUMN));
-    newColumn->title = (char*) malloc((strlen(title) + 1) * sizeof(char));
-    strcpy(newColumn->title, title);
+    if (newColumn == NULL) {
+        return NULL;
+    }
+    newColumn->title = strdup(title);
     newColumn->PHYSICAL_SIZE = REALOC_SIZE;
     newColumn->LOGICAL_SIZE = 0;
-    newColumn->data = (Data*) malloc( REALOC_SIZE* sizeof(Data));
-    newColumn->typeOfData = type;
+    newColumn->column_type = type;
     newColumn->index = NULL;
     return newColumn;
 }
 
 
-/*int insertvaluePart2(COLUMN *column, void *value){
-    if(column->LOGICAL_SIZE==0 ||column->LOGICAL_SIZE==column->PHYSICAL_SIZE){
-        if(column->LOGICAL_SIZE==0){
-            column->data=(Data*)malloc((column->LOGICAL_SIZE)+REALOC_SIZE*sizeof(Data));
-            column->data[column->LOGICAL_SIZE]=value;
-        }else{
-            if(column->LOGICAL_SIZE==column->PHYSICAL_SIZE) {
-                column->data = realloc(column, (column->PHYSICAL_SIZE + REALOC_SIZE) * sizeof(Data));
-                column->data[column->LOGICAL_SIZE] = value;
-                column->PHYSICAL_SIZE += REALOC_SIZE;
-            }
-        }
-        column->LOGICAL_SIZE++;
-        return 1;
-    }else{
-        if((column->LOGICAL_SIZE!=0 && column->LOGICAL_SIZE!=column->PHYSICAL_SIZE)){
-            column->data[column->LOGICAL_SIZE] = value;
-            column->LOGICAL_SIZE++;
-            return 1;
-
-        }else{
+int insertvaluePart2(COLUMN *column, void *value){
+    if(column->LOGICAL_SIZE == 0) {
+        column->data = (COL_TYPE**)malloc(REALOC_SIZE * sizeof(COL_TYPE*));
+        if(column->data == NULL) {
             return 0;
         }
+        column->PHYSICAL_SIZE = REALOC_SIZE;
+    } else if(column->LOGICAL_SIZE == column->PHYSICAL_SIZE) {
+        COL_TYPE **temp = (COL_TYPE**)realloc(column->data, (column->PHYSICAL_SIZE + REALOC_SIZE) * sizeof(COL_TYPE*));
+        if(temp == NULL) {
+            return 0;
+        }
+        column->data = temp;
+        column->PHYSICAL_SIZE += REALOC_SIZE;
     }
-}*/
+
+    COL_TYPE *newData= (COL_TYPE *)malloc(sizeof(COL_TYPE));
+    if (newData == NULL) {
+        return 0;
+    }
+    if(column->data == NULL) {
+        return 0; // column->data has not been allocated memory
+    }
+    column->data[column->LOGICAL_SIZE]=newData;
+
+    switch(column->column_type){
+        case UINT_TYPE:
+            column->data[column->LOGICAL_SIZE]->uint_type = *((unsigned int *)value);
+            break;
+        case INT_TYPE:
+            column->data[column->LOGICAL_SIZE]->int_type = *((int *)value);
+            break;
+        case CHAR_TYPE:
+            column->data[column->LOGICAL_SIZE]->char_type = *((char *)value);
+            break;
+        case FLOAT_TYPE:
+            column->data[column->LOGICAL_SIZE]->float_type = *((float *)value);
+            break;
+        case DOUBLE_TYPE:
+            column->data[column->LOGICAL_SIZE]->double_type = *((double *)value);
+            break;
+        case STRING_TYPE:
+            column->data[column->LOGICAL_SIZE]->string_type = strdup((char *)value);
+            if (column->data[column->LOGICAL_SIZE]->string_type == NULL) {
+                free(column->data[column->LOGICAL_SIZE]);
+                column->data[column->LOGICAL_SIZE] = NULL;
+                return 0;
+            }
+            break;
+        case STRUCT_TYPE:
+            column->data[column->LOGICAL_SIZE]->struct_type = value;
+            break;
+        default:
+            printf("undefined type ");
+            free(column->data[column->LOGICAL_SIZE]);
+            column->data[column->LOGICAL_SIZE] = NULL;
+            return 0;
+    }
+    column->LOGICAL_SIZE++;
+    return 1;
+}
 
 void deletecolumnPart2(COLUMN **col){
-    free((*col)->data);
-    free((*col)->index);
     free((*col)->title);
+    if((*col)->data != NULL){
+        if ((*col)->column_type == STRING_TYPE){
+            for(int i = 0; i < (*col)->LOGICAL_SIZE; i++){
+                free((*col)->data[i]->string_type);
+            }
+        } else if ((*col)->column_type == STRUCT_TYPE){
+            for(int i = 0; i < (*col)->LOGICAL_SIZE; i++){
+                free((*col)->data[i]->struct_type);
+            }
+        } else{
+            free((*col)->data);
+        }
+    }
+    free((*col)->index);
+    (*col)->index = NULL;
     free(*col);
 }
-
 void convert_value(COLUMN *col, unsigned long long int i, char *str, int size){
-    switch(col->data[i].type){
+    if(i>=col->LOGICAL_SIZE){
+        printf("index out of range");
+        return;
+    }
+    switch(col->column_type){
         case UINT_TYPE :
-            itoa(- col->data[i].value.int_type, str, size);
+            snprintf(str,size,"%u",*((unsigned int*)col->data[i]));
             break;
         case INT_TYPE :
-            itoa(col->data[i].value.int_type, str, size);
+            snprintf(str,size,"%d",*(( int*)col->data[i]));
             break;
-        case CHAR_TYPE :
-            strcpy(str, &col->data[i].value.char_type);
+        case CHAR_TYPE:
+            snprintf(str,size,"%c",*((char*)col->data[i]));
             break;
-        case FLOAT_TYPE :
-            sprintf(str,"%f", col->data[i].value.float_type);
+        case FLOAT_TYPE:
+            snprintf(str,size,"%f",*((float*)col->data[i]));
             break;
         case DOUBLE_TYPE :
-            sprintf(str, "%lf", col->data[i].value.double_type);
+            snprintf(str,size,"%lf",*((double*)col->data[i]));
             break;
         case STRING_TYPE :
-            strcpy(str,col->data[i].value.string_type);
+            strncpy(str, (char*)col->data[i], size);
+            str[size - 1] = '\0';
             break;
-        case STRUCT_TYPE :
-            strcpy(str, "NULL");
+        case STRUCT_TYPE:
+            snprintf(str, size, "%p", col->data[i]->struct_type);
             break;
-        default :
-            printf("ERROR : unknown type.\n");
+        default:
+            printf("Undefined type encountered\n");
             break;
     }
 }
 
 
-void printcolPart2(COLUMN* col){
-    for (int i = 0; i<col->LOGICAL_SIZE; i++){
-        char *str = malloc(sizeof(col->data[i].value));
-        convert_value(col, i, str, 20);
-        printf("%s", str);
+
+int occurrencePart2(COLUMN *col, void *value) {
+    if (col == NULL || value == NULL) {
+        return 0;
     }
+    int cpt = 0;
+    for (unsigned long long i = 0; i < col->LOGICAL_SIZE; i++) {
+        switch (col->column_type) {
+            case UINT_TYPE:
+                if (col->data[i]->uint_type == *(unsigned int *)value) {
+                    cpt++;
+                }
+                break;
+            case INT_TYPE:
+                if (col->data[i]->int_type == *(signed int *)value) {
+                    cpt++;
+                }
+                break;
+            case CHAR_TYPE:
+                if (col->data[i]->char_type == *(char *)value) {
+                    cpt++;
+                }
+                break;
+            case FLOAT_TYPE:
+                if (col->data[i]->float_type == *(float *)value) {
+                    cpt++;
+                }
+                break;
+            case DOUBLE_TYPE:
+                if (col->data[i]->double_type == *(double *)value) {
+                    cpt++;
+                }
+                break;
+            case STRING_TYPE:
+                if (strcmp(col->data[i]->string_type, (char *)value) == 0) {
+                    cpt++;
+                }
+                break;
+            case STRUCT_TYPE:
+                // Comparaison des structures non implémentée pour l'instant
+                break;
+            case NULLVAL:
+                break;
+            default:
+                break;
+
+        }
+    }
+    return cpt;
 }
 
+int numberOfValuesAboveSearchValuePart2(COLUMN *col, void *value) {
+    if (col == NULL || value == NULL) {
+        return 0;
+    }
+    int cpt = 0;
+    for (unsigned long long i = 0; i < col->LOGICAL_SIZE; i++) {
+        switch (col->column_type) {
+            case UINT_TYPE:
+                if (col->data[i]->uint_type > *(unsigned int *)value) {
+                    cpt++;
+                }
+                break;
+            case INT_TYPE:
+                if (col->data[i]->int_type > *(signed int *)value) {
+                    cpt++;
+                }
+                break;
+            case CHAR_TYPE:
+                if (col->data[i]->char_type > *(char *)value) {
+                    cpt++;
+                }
+                break;
+            case FLOAT_TYPE:
+                if (col->data[i]->float_type > *(float *)value) {
+                    cpt++;
+                }
+                break;
+            case DOUBLE_TYPE:
+                if (col->data[i]->double_type > *(double *)value) {
+                    cpt++;
+                }
+                break;
+            case STRING_TYPE:
+                if (strcmp(col->data[i]->string_type, (char *)value) > 0) {
+                    cpt++;
+                }
+                break;
+            case STRUCT_TYPE:
+                // Comparaison des structures non implémentée pour l'instant
+                break;
+            case NULLVAL:
+                break;
+            default:
+                break;
+
+        }
+    }
+    return cpt;
+}
+
+int numberOfValuesUnderSearchValuePart2(COLUMN *col, void *value) {
+    if (col == NULL || value == NULL) {
+        return 0;
+    }
+    int cpt = 0;
+    for (unsigned long long i = 0; i < col->LOGICAL_SIZE; i++) {
+        switch (col->column_type) {
+            case UINT_TYPE:
+                if (col->data[i]->uint_type < *(unsigned int *)value) {
+                    cpt++;
+                }
+                break;
+            case INT_TYPE:
+                if (col->data[i]->int_type < *(signed int *)value) {
+                    cpt++;
+                }
+                break;
+            case CHAR_TYPE:
+                if (col->data[i]->char_type < *(char *)value) {
+                    cpt++;
+                }
+                break;
+            case FLOAT_TYPE:
+                if (col->data[i]->float_type < *(float *)value) {
+                    cpt++;
+                }
+                break;
+            case DOUBLE_TYPE:
+                if (col->data[i]->double_type < *(double *)value) {
+                    cpt++;
+                }
+                break;
+            case STRING_TYPE:
+                if (strcmp(col->data[i]->string_type, (char *)value) < 0) {
+                    cpt++;
+                }
+                break;
+            case STRUCT_TYPE:
+                // Comparaison des structures non implémentée pour l'instant
+                break;
+            case NULLVAL:
+                break;
+            default:
+                break;
+        }
+    }
+    return cpt;
+}
+
+void printValueAtIndex(COLUMN* col, unsigned long long index){
+    int size = sizeof(col->column_type);
+    char str[5];
+    convert_value(col, index, str, size);
+    printf("%s", str);
+}
