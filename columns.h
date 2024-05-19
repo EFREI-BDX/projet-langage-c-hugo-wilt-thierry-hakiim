@@ -79,15 +79,15 @@ int compareValues(Data* value1, Data* value2);
 int get_type(char* input);
 int get_type2(char* input);*/
 
-COLUMN *createcolumnPart2(ENUM_TYPE type, char *title);
-int insertvaluePart2(COLUMN *column, void *type);
-void deletecolumnPart2(COLUMN **col);
-void convert_value(COLUMN *col, unsigned long long int i, char *str, int size);
+COLUMN *createColumnPart2(ENUM_TYPE type, char *title);
+int insertValuePart2(COLUMN *column, void *type);
+void deleteColumnPart2(COLUMN **col);
+void convertValue(COLUMN *col, unsigned long long int i, char *str, int size);
 int occurrencePart2(COLUMN *col, void *value);
 int numberOfValuesAboveSearchValuePart2(COLUMN *col, void *value);
 int numberOfValuesUnderSearchValuePart2(COLUMN *col, void *value);
 void printValueAtIndex(COLUMN* col, unsigned long long index);
-void print_col(COLUMN* col);
+void printCol(COLUMN* col);
 
 
 #endif //PROJET_LANGAGE_C_COLUMNS_H

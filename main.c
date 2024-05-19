@@ -286,8 +286,7 @@ Data getInput(int type, char *input) {
     }
     return val;
 }*/
-int main(){
-    char str[5];
+int main(){/*
     COLUMN *mycol = createcolumnPart2(INT_TYPE, "My column");
     int a = 52, b = 44, c = 15, d = 18, e = 15, f = 15, g =12, h = 3;
     char k = 'a';
@@ -304,7 +303,12 @@ int main(){
     printf("%d ", occurrencePart2(mycol, &k));
     printf("%d ", numberOfValuesAboveSearchValuePart2(mycol, &k));
     printf("%d\n", numberOfValuesUnderSearchValuePart2(mycol, &k));
-    printValueAtIndex(mycol, 3);
+    printValueAtIndex(mycol, 3);*/
+    ENUM_TYPE cdftype [] = {INT_TYPE,CHAR_TYPE,INT_TYPE};
+    CDATAFRAME *cdf = createCdataframe(cdftype, 3);
+    //printf("%d", getCdataframeColsSize(cdf));
+    fillCDataframe(cdf);
+    printCdataframe(cdf);
     return 0;
 }
 

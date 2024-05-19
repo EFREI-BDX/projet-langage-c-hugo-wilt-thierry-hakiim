@@ -3,16 +3,139 @@
 //
 
 #include "linkedList.h"
-/*
+
 // Liste chainée
-Cell* makeCell(char *title) {
-    Cell *newCell = (Cell*)malloc(sizeof(Cell));
-    newCell->addressColumn = create_column(title);
-    newCell->next = NULL;
-    return newCell;
+
+CDATAFRAME *createCdataframe(ENUM_TYPE *cdftype, int size){
+    CDATAFRAME *cdf = (CDATAFRAME *)malloc(sizeof(CDATAFRAME));
+    if (cdf==NULL) {
+        return NULL;
+    }
+    cdf->head = NULL;
+    cdf->tail = NULL;
+
+    for (int i = 0; i < size; i++) {
+        char title[REALOC_SIZE];
+        snprintf(title, 20, "Column %d", i+1); // Generate a title for each column
+        COLUMN *col = createColumnPart2(cdftype[i], title);
+
+        if(col == NULL){
+            return NULL;
+        }
+        LNODE *node=(LNODE*)malloc(sizeof(LNODE));
+        if(node==NULL){
+            return NULL;
+        }
+        node->data=col;
+        if (cdf->head == NULL) {
+            node->prev = NULL;
+            node->next = NULL;
+            cdf->head = node;
+            cdf->tail = node;
+        }else{
+            node->prev=cdf->tail;
+            node->next=NULL;
+            cdf->tail->next = node;
+            cdf->tail = node;
+        }
+    }
+
+    return cdf;
+
 }
 
-Liste *inputLinkedList(int size, Liste *myliste) {
+void deleteCdataframe(CDATAFRAME** cdf) {
+    if (cdf == NULL || *cdf == NULL) return;
+    LNODE* current = (*cdf)->head;
+    LNODE* next;
+    while (current != NULL) {
+        deleteColumnPart2(&current->data);
+        next = current->next;
+        free(current);
+        current = next;
+    }
+    (*cdf)->head = NULL;
+    (*cdf)->tail = NULL;
+    free(*cdf);
+    *cdf = NULL;
+}
+
+void deleteColumn(CDATAFRAME *cdf, char *colName) {
+    if (cdf == NULL || colName == NULL) return;
+    LNODE* current = cdf->head;
+    LNODE* prev = NULL;
+    while (current != NULL) {
+        COLUMN* col = current->data;
+        if (strcmp(col->title, colName) == 0) {
+            if (prev == NULL) {
+                cdf->head = current->next;
+            } else {
+                prev->next = current->next;
+            }
+            if (current == cdf->tail) {
+                cdf->tail = prev;
+            }
+            deleteColumnPart2(&col);
+            free(current);
+            return;
+        }
+        prev = current;
+        current = current->next;
+    }
+}
+
+int getCdataframeColsCize(CDATAFRAME *cdf) {
+    int cpt = 0;
+    LNODE* current = cdf->head;
+    while (current != NULL) {
+        cpt++;
+        current = current->next;
+    }
+    return cpt;
+}
+
+void fillCDataframe(CDATAFRAME *cdf) {
+    if (cdf == NULL || cdf->head == NULL) {
+        printf("Empty CDATAFRAME\n");
+        return;
+    }
+    LNODE* current = cdf->head;
+    while (current != NULL) {
+        int numberOfValues = 0;
+        printf("Number of values for column %s: ", current->data->title);
+        scanf("%d", &numberOfValues);
+        for (int i = 0; i < numberOfValues; i++) {
+            insertValuePart2(current->data, &i);
+        }
+        current = current->next;
+    }
+}
+
+void printCdataframe(CDATAFRAME* cdf) {
+    if (cdf == NULL || cdf->head == NULL) {
+        printf("Empty CDATAFRAME\n");
+        return;
+    }
+    LNODE* current = cdf->head;
+    while (current != NULL) {
+        printCol(current->data);
+        current = current->next;
+    }
+}
+
+void printCdataframeWithLimit(CDATAFRAME* cdf) {
+    if (cdf == NULL || cdf->head == NULL) {
+        printf("Empty CDATAFRAME\n");
+        return;
+    }
+    LNODE* current = cdf->head;
+    while (current != NULL) {
+        printCol(current->data);
+        current = current->next;
+    }
+}
+
+/*Liste *inputLinkedList(int size, Liste *myliste) {
     for (int i=0; i<size;i++){
         char *title = (char*) malloc(MAX_TITLE_NAME_SIZE * sizeof(char));
         printf("Enter a title : ");
@@ -22,8 +145,12 @@ Liste *inputLinkedList(int size, Liste *myliste) {
     return myliste;
 }
 
+void fillListPart2(){
+
+}
+
 void fillList(char* title, Liste* liste) {
-    Cell* newCell = makeCell(title);
+    CDATAFRAME* newCell = makeCell(title);
     int status, type, typeOfInput, numberOfValues;
     printf("Enter number of values :");
     scanf("%d", &numberOfValues);
@@ -490,4 +617,4 @@ void hardFillLinked(Liste* liste){
         }
     }
 
-*/
+*

@@ -228,7 +228,7 @@ void hardFill(COLUMN** array){
 }
 
 */
-COLUMN *createcolumnPart2(ENUM_TYPE type, char *title){
+COLUMN *createColumnPart2(ENUM_TYPE type, char *title){
     COLUMN *newColumn= (COLUMN*) malloc( REALOC_SIZE* sizeof(COLUMN));
     if (newColumn == NULL) {
         return NULL;
@@ -242,7 +242,7 @@ COLUMN *createcolumnPart2(ENUM_TYPE type, char *title){
 }
 
 
-int insertvaluePart2(COLUMN *column, void *value){
+int insertValuePart2(COLUMN *column, void *value){
     if(column->LOGICAL_SIZE == 0) {
         column->data = (COL_TYPE**)malloc(REALOC_SIZE * sizeof(COL_TYPE*));
         if(column->data == NULL) {
@@ -304,7 +304,7 @@ int insertvaluePart2(COLUMN *column, void *value){
     return 1;
 }
 
-void deletecolumnPart2(COLUMN **col){
+void deleteColumnPart2(COLUMN **col){
     free((*col)->title);
     if((*col)->data != NULL){
         if ((*col)->column_type == STRING_TYPE){
@@ -323,7 +323,7 @@ void deletecolumnPart2(COLUMN **col){
     (*col)->index = NULL;
     free(*col);
 }
-void convert_value(COLUMN *col, unsigned long long int i, char *str, int size){
+void convertValue(COLUMN *col, unsigned long long int i, char *str, int size){
     if(i>=col->LOGICAL_SIZE){
         printf("index out of range");
         return;
@@ -511,12 +511,12 @@ int numberOfValuesUnderSearchValuePart2(COLUMN *col, void *value) {
 void printValueAtIndex(COLUMN* col, unsigned long long index){
     int size = sizeof(col->column_type);
     char str[5];
-    convert_value(col, index, str, size);
+    convertValue(col, index, str, size);
     printf("%s", str);
 }
 
 
-void print_col(COLUMN* col){
+void printCol(COLUMN* col){
     if(col==NULL){
         printf("The column is NULL");
         return;
@@ -528,7 +528,7 @@ void print_col(COLUMN* col){
         if(col->data[i]==NULL){
             printf("NULL\n");
         }else{
-            convert_value(col,i,string,sizeof(string));
+            convertValue(col,i,string,sizeof(string));
             printf("%s\n",string);
         }
     }
