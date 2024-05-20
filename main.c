@@ -49,7 +49,6 @@ int main(){
                     insertValuePart2(mycol, &i);
                 }
             }
-            ENUM_TYPE cdftype [] = {UINT_TYPE,INT_TYPE,CHAR_TYPE,FLOAT_TYPE,DOUBLE_TYPE,STRING_TYPE};
             printf("Enter value of type to search : \n1 for UINT\n2 for INT\n3 for char\n4 for float\n5 for double\n6 for string\n");
             scanf("%d", &typeOfVal);
             if (typeOfColumn == typeOfVal){
@@ -114,9 +113,6 @@ int main(){
     } else if (partSelection ==2){
         ENUM_TYPE cdftype [] = {UINT_TYPE,CHAR_TYPE,STRING_TYPE};
         CDATAFRAME *cdf = createCdataframe(cdftype, 3);
-        int searchValue = 10;
-        int count = countValuesLesserThan(cdf, &searchValue);
-        //printf("Number of values greater than %d: %d\n", searchValue, count);
         printf("Choose function : \n1 for size of dataframe\n2 for fill\n3 for print with limit\n4 for search\n5 to add col\n6 replace val at index\n7 change title\n");
         scanf("%d", &functionSelection);
         if (functionSelection == 1){

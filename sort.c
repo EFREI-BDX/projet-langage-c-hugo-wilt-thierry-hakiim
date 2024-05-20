@@ -1,6 +1,5 @@
 #include "sort.h"
 #include "columns.h"
-#include "linkedList.h"
 
 void swap(unsigned long long *a, unsigned long long *b) {
     unsigned long long temp = *a;
@@ -135,9 +134,8 @@ void eraseIndex(COLUMN *col){
 int checkIndex(COLUMN *col){
     if (col == NULL) {
         printf("No work to do :P\n");
-    } else{
-        return col->valid_index;
     }
+    return col->valid_index;
 }
 
 void updateIndex(COLUMN *col){
