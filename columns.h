@@ -8,62 +8,52 @@
 #include <stdlib.h>
 #include <string.h>
 #define REALOC_SIZE 256
-
-typedef enum {
+enum enum_type{
+    NULLVAL=1,
     UINT_TYPE,
     INT_TYPE,
     CHAR_TYPE,
     FLOAT_TYPE,
     DOUBLE_TYPE,
     STRING_TYPE,
-}DataType;
-typedef struct {
-    DataType type;
-    union {
-        unsigned unsigned_type;
-        int int_type;
-        char char_type;
-        float float_type;
-        double double_type;
-        char string_type;
-    }value;
-}Data;
+    STRUCT_TYPE,
+};
+typedef enum enum_type ENUM_TYPE;
 
+union column_type{
+    unsigned int uint_type;
+    signed int int_type;
+    char char_type;
+    float float_type;
+    double double_type;
+    char* string_type;
+    void* struct_type;
+};
+typedef union column_type COL_TYPE;
 
+struct column {
+    char *title;
+    unsigned int LOGICAL_SIZE;
+    unsigned int PHYSICAL_SIZE;
+    ENUM_TYPE column_type;
+    COL_TYPE **data;
+    unsigned long long int *index;
+    int valid_index;
+    unsigned int index_size;
+    int sort_dir;
+};
 
-typedef struct {
-    char* title;
-    int PHYSICAL_SIZE;
-    int LOGICAL_SIZE;
-    Data* data;
-} COLUMN;
+typedef struct column COLUMN;
 
-typedef COLUMN* tableau;
-
-COLUMN* create_column(char* title);
-int insert_value(COLUMN* column, Data value);
-void delete_column(COLUMN **col);
-void print_col(COLUMN* col);
-int occurrence(COLUMN* col, Data searchValue);
-Data valueAtIndex(COLUMN* col,int indexValue);
-int numberOfValuesAboveSearchValue(COLUMN* col,Data searchValue);
-int numberOfValuesUnderSearchValue(COLUMN* col,Data searchValue);
-int isSameType(Data* value1, Data* value2);
-int compareValues(Data* value1, Data* value2);
-
-
-
-int get_type(char* input);
-COLUMN** createEmptyCDataframe(int size);
-void fillArray(COLUMN** array, int size);
-void displayDataFrame(COLUMN** array, int size);
-void hardFill(COLUMN** array);
-void displayLinesWithLimit(COLUMN** array, int size, Data limit);
-void displayColumnsWithLimit(COLUMN** array, int size, char *title);
-void addColumn(COLUMN*** array, int* size_ptr, char* title);
-
-
-
+COLUMN *createColumnPart2(ENUM_TYPE type, char *title);
+int insertValuePart2(COLUMN *column, void *type);
+void deleteColumnPart2(COLUMN **col);
+void convertValue(COLUMN *col, unsigned long long int i, char *str, int size);
+int occurrencePart2(COLUMN *col, void *value);
+int numberOfValuesAboveSearchValuePart2(COLUMN *col, void *value);
+int numberOfValuesUnderSearchValuePart2(COLUMN *col, void *value);
+void printValueAtIndex(COLUMN* col, unsigned long long index);
+void printCol(COLUMN* col);
 
 
 #endif //PROJET_LANGAGE_C_COLUMNS_H

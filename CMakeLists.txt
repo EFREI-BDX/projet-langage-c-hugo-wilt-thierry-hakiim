@@ -7,4 +7,6 @@ add_executable(Projet_Langage_C main.c
         columns.c
         columns.h
         linkedList.c
-        linkedList.h)
+        linkedList.h
+        sort.c
+        sort.h)
