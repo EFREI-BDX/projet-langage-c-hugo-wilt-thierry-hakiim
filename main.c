@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "columns.h"
 #include "linkedList.h"
-
+#include "sort.h"
 
 /*Data getInput(int type, char *input);
 
@@ -287,38 +287,54 @@ Data getInput(int type, char *input) {
     return val;
 }*/
 int main(){/*
-    COLUMN *mycol = createcolumnPart2(INT_TYPE, "My column");
+    COLUMN *mycol = createColumnPart2(INT_TYPE, "My column");
     int a = 52, b = 44, c = 15, d = 18, e = 15, f = 15, g =12, h = 3;
     char k = 'a';
-    insertvaluePart2(mycol, &a);
-    insertvaluePart2(mycol, &b);
-    insertvaluePart2(mycol, &c);
-    insertvaluePart2(mycol, &d);
-    insertvaluePart2(mycol, &e);
-    insertvaluePart2(mycol, &f);
-    insertvaluePart2(mycol, &g);
-    insertvaluePart2(mycol, &h);
-    insertvaluePart2(mycol, &k);
-    print_col(mycol);
+    insertValuePart2(mycol, &a);
+    insertValuePart2(mycol, &b);
+    insertValuePart2(mycol, &c);
+    insertValuePart2(mycol, &d);
+    insertValuePart2(mycol, &e);
+    insertValuePart2(mycol, &f);
+    //insertValuePart2(mycol, &g);
+    //insertValuePart2(mycol, &h);
+    //insertValuePart2(mycol, &k);
+    printCol(mycol);
+
     printf("%d ", occurrencePart2(mycol, &k));
     printf("%d ", numberOfValuesAboveSearchValuePart2(mycol, &k));
     printf("%d\n", numberOfValuesUnderSearchValuePart2(mycol, &k));
-    printValueAtIndex(mycol, 3);*/
+    printValueAtIndex(mycol, 3);
     ENUM_TYPE cdftype [] = {UINT_TYPE,CHAR_TYPE,STRING_TYPE};
     CDATAFRAME *cdf = createCdataframe(cdftype, 3);
-    //printf("%d", getCdataframeColsSize(cdf));
-    //hardFillCDataframe(cdf);
-    //printCdataframeWithLimit(cdf, 1);
+    printf("%d", getCdataframeColsSize(cdf));
+    hardFillCDataframe(cdf);
+    printCdataframeWithLimit(cdf, 1);
     fillCDataframe(cdf);
     printCdataframe(cdf);
     int a = 3;
-    //printf("%d", valueExists(cdf, &a));
-    //printNumberOfColumns(cdf);
-    //printNumberOfRows(cdf);
+    printf("%d", valueExists(cdf, &a));
+    printNumberOfColumns(cdf);
+    printNumberOfRows(cdf);
     int searchValue = 10;
 
     int count = countValuesLesserThan(cdf, &searchValue);
-    printf("Number of values greater than %d: %d\n", searchValue, count);
+    printf("Number of values greater than %d: %d\n", searchValue, count);*/
+    COLUMN *mycol = createColumnPart2(STRING_TYPE, "String column");
+    insertValuePart2(mycol, "Lima");
+    insertValuePart2(mycol, "Bravo");
+    insertValuePart2(mycol, "Zulu");
+    insertValuePart2(mycol, "Tango");
+    printf("Column content before sorting : \n");
+    printCol(mycol);
+    sort(mycol,ASC);
+    printf("Column content after sorting : \n");
+    displayColByIndex(mycol);
+    /*printf("%d", check_index(mycol));
+    eraseIndex(mycol);
+    updateIndex(mycol);
+    printf("%d", check_index(mycol));*/
+    printf("%d", searchValueInColumn(mycol, "Lima"));
     return 0;
 }
 
