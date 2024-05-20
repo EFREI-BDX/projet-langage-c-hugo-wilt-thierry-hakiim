@@ -423,7 +423,7 @@ int countValuesLesserThan(CDATAFRAME *cdf, void *value) {
 }
 
 
-ENUM_TYPE determineType(const void *value) {
+ENUM_TYPE determineType(void *value) {
     if (value == NULL) {
         return NULLVAL;
     }
