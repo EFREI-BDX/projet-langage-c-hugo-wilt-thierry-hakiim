@@ -7,6 +7,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
+#include "sort.h"
 
 
 
@@ -228,17 +229,37 @@ void hardFill(COLUMN** array){
 }
 
 */
-COLUMN *createcolumnPart2(ENUM_TYPE type, char *title){
-    COLUMN *newColumn= (COLUMN*) malloc( REALOC_SIZE* sizeof(COLUMN));
-    if (newColumn == NULL) {
+COLUMN* createcolumnPart2(ENUM_TYPE type, char* title) {
+    COLUMN* col = (COLUMN*)malloc(sizeof(COLUMN));
+    if (col == NULL) {
+        printf("Error: Memory allocation failed\n");
         return NULL;
     }
-    newColumn->title = strdup(title);
-    newColumn->PHYSICAL_SIZE = REALOC_SIZE;
-    newColumn->LOGICAL_SIZE = 0;
-    newColumn->column_type = type;
-    newColumn->index = NULL;
-    return newColumn;
+    col->column_type = type;
+    col->title = strdup(title); // Use strdup to create a copy of the title
+    if (col->title == NULL) {
+        printf("Error: Memory allocation for title failed\n");
+        free(col);
+        return NULL;
+    }
+    col->LOGICAL_SIZE = 0;
+    col->index_size = 0;
+    col->index = (unsigned long long*)malloc(sizeof(unsigned long long) * REALOC_SIZE);
+    if (col->index == NULL) {
+        printf("Error: Memory allocation for index failed\n");
+        free(col->title);
+        free(col);
+        return NULL;
+    }
+    col->data = (COL_TYPE **)malloc(sizeof(COL_TYPE *) * REALOC_SIZE);
+    if (col->data == NULL) {
+        printf("Error: Memory allocation for data failed\n");
+        free(col->index);
+        free(col->title);
+        free(col);
+        return NULL;
+    }
+    return col;
 }
 
 
@@ -516,20 +537,32 @@ void printValueAtIndex(COLUMN* col, unsigned long long index){
 }
 
 
-void print_col(COLUMN* col){
-    if(col==NULL){
+void printCol(COLUMN* col) {
+    if (col == NULL) {
         printf("The column is NULL");
         return;
     }
-    printf("Title: %s\n",col->title);
+    printf("Title: %s\n", col->title);
     char string[REALOC_SIZE];
-    for(unsigned long long int  i=0;i<col->LOGICAL_SIZE;i++){
+    for (unsigned long long int i = 0; i < col->LOGICAL_SIZE; i++) {
         printf("[%llu] ", i);
-        if(col->data[i]==NULL){
+        if (col->data[i] == NULL) {
             printf("NULL\n");
-        }else{
-            convert_value(col,i,string,sizeof(string));
-            printf("%s\n",string);
+        } else {
+            switch (col->column_type) {
+                case STRING_TYPE:
+                    if (col->data[i]->string_type == NULL) {
+                        printf("NULL\n");
+                    } else {
+                        printf("%s\n", col->data[i]->string_type);
+                    }
+                    break;
+                default:
+                    convert_value(col, i, string, sizeof(string));
+                    printf("%s\n", string);
+            }
         }
     }
 }
+
+

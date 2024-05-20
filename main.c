@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "columns.h"
 #include "linkedList.h"
+#include "sort.h"
 
 
 /*Data getInput(int type, char *input);
@@ -287,7 +288,7 @@ Data getInput(int type, char *input) {
     return val;
 }*/
 int main(){
-    char str[5];
+   /* char str[5];
     COLUMN *mycol = createcolumnPart2(INT_TYPE, "My column");
     int a = 52, b = 44, c = 15, d = 18, e = 15, f = 15, g =12, h = 3;
     char k = 'a';
@@ -305,5 +306,35 @@ int main(){
     printf("%d ", numberOfValuesAboveSearchValuePart2(mycol, &k));
     printf("%d\n", numberOfValuesUnderSearchValuePart2(mycol, &k));
     printValueAtIndex(mycol, 3);
+    ENUM_TYPE cdftype [] = {INT_TYPE,STRING_TYPE,INT_TYPE};
+    CDATAFRAME *cdf = create_cdataframe(cdftype, 3);
+    fillCDataframe(cdf);
+    printCdataframe(cdf);
+    void *newLine[3];
+    int intVal = 4;
+    char *strVal = "AZERTY";
+    int intVal2 = 10;
+    newLine[0] = &intVal;
+    newLine[1] = strVal;
+    newLine[2] = &intVal2;
+    addLineToCdataFrame(cdf, newLine);
+    printCdataframe(cdf);
+    deleteLineFromCdataFrame(cdf, 0);
+    printCdataframe(cdf);*/
+
+    COLUMN *mycol = createcolumnPart2(INT_TYPE, "sorted column");
+    int a = 52;
+    int b = 44;
+    int c = 15;
+    int d = 18;
+    insertvaluePart2(mycol, &a);
+    insertvaluePart2(mycol, &b);
+    insertvaluePart2(mycol, &c);
+    insertvaluePart2(mycol, &d);
+    printf("Column content before sorting : \n");
+    printCol(mycol);
+    sort(mycol,ASC);
+    printf("Column content after sorting : \n");
+    displayColByIndex(mycol);
     return 0;
 }

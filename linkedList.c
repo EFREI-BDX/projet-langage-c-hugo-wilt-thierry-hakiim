@@ -3,6 +3,7 @@
 //
 
 #include "linkedList.h"
+#include "columns.h"
 
 /*// Liste chainée
 Cell* makeCell(char *title) {
@@ -487,3 +488,233 @@ void hardFillLinked(Liste* liste){
     }
 
 }*/
+CDATAFRAME *create_cdataframe(ENUM_TYPE *cdftype, int size){
+
+    CDATAFRAME *cdf = (CDATAFRAME *)malloc(sizeof(CDATAFRAME));
+    if (cdf==NULL) {
+        return NULL;
+    }
+    cdf->head = NULL;
+    cdf->tail = NULL;
+
+    for (int i = 0; i < size; i++) {
+        char title[REALOC_SIZE];
+        snprintf(title, 20, "Column %d", i+1); // Generate a title for each column
+        COLUMN *col = createcolumnPart2(cdftype[i], title);
+
+        if(col == NULL){
+           return NULL;
+       }
+        LNODE *node=(LNODE*)malloc(sizeof(LNODE));
+        if(node==NULL){
+            return NULL;
+        }
+        node->data=col;
+        if (cdf->head == NULL) {
+            node->prev = NULL;
+            node->next = NULL;
+            cdf->head = node;
+            cdf->tail = node;
+        }else{
+            node->prev=cdf->tail;
+            node->next=NULL;
+            cdf->tail->next = node;
+            cdf->tail = node;
+        }
+    }
+
+    return cdf;
+
+}
+void delete_cdataframe(CDATAFRAME** cdf) {
+    if (cdf == NULL || *cdf == NULL) return;
+    LNODE* current = (*cdf)->head;
+    LNODE* next;
+    while (current != NULL) {
+        deletecolumnPart2(&current->data);
+        next = current->next;
+        free(current);
+        current = next;
+    }
+    (*cdf)->head = NULL;
+    (*cdf)->tail = NULL;
+    free(*cdf);
+    *cdf = NULL;
+}
+
+void delete_column(CDATAFRAME *cdf, char *col_name) {
+    if (cdf == NULL || col_name == NULL) return;
+    LNODE* current = cdf->head;
+    LNODE* prev = NULL;
+    while (current != NULL) {
+        COLUMN* col = current->data;
+        if (strcmp(col->title, col_name) == 0) {
+            if (prev == NULL) {
+                cdf->head = current->next;
+            } else {
+                prev->next = current->next;
+            }
+            if (current == cdf->tail) {
+                cdf->tail = prev;
+            }
+            deletecolumnPart2(&col);
+            free(current);
+            return;
+        }
+        prev = current;
+        current = current->next;
+    }
+}
+
+
+int get_cdataframe_cols_size(CDATAFRAME *cdf) {
+    int cpt = 0;
+    LNODE* current = cdf->head;
+    while (current != NULL) {
+        cpt++;
+        current = current->next;
+    }
+    return cpt;
+}
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "cdataframe.h"
+
+void fillCDataframe(CDATAFRAME *cdf) {
+    if (cdf == NULL || cdf->head == NULL) return;
+    LNODE* current = cdf->head;
+    while (current != NULL) {
+        COLUMN* col = current->data;
+        printf("Number of values for column %s: ", col->title);
+        int numberOfValues;
+        scanf("%d", &numberOfValues);
+        col->LOGICAL_SIZE = numberOfValues;
+        col->data = (COL_TYPE**)malloc(numberOfValues * sizeof(COL_TYPE*));
+
+        for (int i = 0; i < numberOfValues; i++) {
+            col->data[i] = (COL_TYPE*)malloc(sizeof(COL_TYPE));
+            printf("Enter value %d for column %s: ", i + 1, col->title);
+            switch (col->column_type) {
+                case UINT_TYPE:
+                    scanf("%u", &col->data[i]->uint_type);
+                    break;
+                case INT_TYPE:
+                    scanf("%d", &col->data[i]->int_type);
+                    break;
+                case CHAR_TYPE:
+                    scanf(" %c", &col->data[i]->char_type);
+                    break;
+                case FLOAT_TYPE:
+                    scanf("%f", &col->data[i]->float_type);
+                    break;
+                case DOUBLE_TYPE:
+                    scanf("%lf", &col->data[i]->double_type);
+                    break;
+                case STRING_TYPE:
+                    col->data[i]->string_type = (char*)malloc(101 * sizeof(char)); // Allocate 101 bytes for the string and the null terminator
+                    scanf(" %[^\n]s", col->data[i]->string_type);
+                    col->data[i]->string_type[100] = '\0'; // Ensure the string is null-terminated
+                    break;
+                case STRUCT_TYPE:
+                    printf("Struct input not implemented.\n");
+                    break;
+                case NULLVAL:
+                    printf("NULL");
+                    break;
+                default:
+                    printf("Unknown type.\n");
+                    break;
+            }
+        }
+        current = current->next;
+    }
+}
+
+void printCdataframe(CDATAFRAME* cdf) {
+    if (cdf == NULL || cdf->head == NULL) {
+        printf("Empty CDATAFRAME\n");
+        return;
+    }
+    LNODE* current = cdf->head;
+    while (current != NULL) {
+        printCol(current->data);
+        current = current->next;
+    }
+}
+
+void printCdataframeWithLimit(CDATAFRAME* cdf, int limitIndex) {
+    int cpt =0;
+    if (cdf == NULL || cdf->head == NULL) {
+        printf("Empty CDATAFRAME\n");
+        return;
+    }
+    LNODE* current = cdf->head;
+    while (current != NULL && cpt<limitIndex) {
+        printCol(current->data);
+        current = current->next;
+        cpt+=1;
+    }
+}
+void addLineToCdataFrame(CDATAFRAME *cdf, void **values){
+    int i=0;
+    if(cdf==NULL || values==0){
+        return;
+    }
+    LNODE *current=cdf->head;
+    while(current!=NULL){
+        COLUMN *col=current->data;
+        COL_TYPE* new_value = (COL_TYPE*)malloc(sizeof(COL_TYPE));
+        switch (col->column_type) {
+            case UINT_TYPE:
+                new_value->uint_type = *(unsigned int*)values[i];
+                break;
+            case INT_TYPE:
+                new_value->int_type = *(signed int*)values[i];
+                break;
+            case CHAR_TYPE:
+                new_value->char_type = *(char*)values[i];
+                break;
+            case FLOAT_TYPE:
+                new_value->float_type = *(float*)values[i];
+                break;
+            case DOUBLE_TYPE:
+                new_value->double_type = *(double*)values[i];
+                break;
+            case STRING_TYPE:
+                new_value->string_type = strdup((char*)values[i]);
+                break;
+            case STRUCT_TYPE:
+
+                break;
+            case NULLVAL:
+
+                break;
+            default:
+                break;
+        }
+        col->data = (COL_TYPE**)realloc(col->data, (col->LOGICAL_SIZE + 1) * sizeof(COL_TYPE*));
+        col->data[col->LOGICAL_SIZE] = new_value;
+        col->LOGICAL_SIZE++;
+
+        current = current->next;
+        i++;
+    }
+}
+void deleteLineFromCdataFrame(CDATAFRAME *cdf, int lineIndex) {
+
+    if (cdf == NULL) {
+        return;
+    }
+    LNODE *current = cdf->head;
+    while(current!=NULL){
+        COLUMN *col=current->data;
+        if(col->LOGICAL_SIZE > lineIndex){
+            for(int i=lineIndex;i<col->LOGICAL_SIZE-1;i++){
+                col->data[i]=col->data[i+1];
+            }
+            col->LOGICAL_SIZE--;
+        }
+        current=current->next;
+    }
+}
