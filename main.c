@@ -295,9 +295,14 @@ int main(){
                 insertValuePart2(mycol2, "Zulu");
                 insertValuePart2(mycol2, "Tango");
                 sort(mycol2, ASC);
+                printf("Index : %d\n", checkIndex(mycol));
                 displayColByIndex(mycol2);
                 scanf("%s", valueSTRING);
                 printf("-1: column not sorted, 0: value not found 1: value found, result : %d", searchValueInColumn(mycol2, valueSTRING));
+                eraseIndex(mycol);
+                printf("\n%d", checkIndex(mycol));
+                updateIndex(mycol);
+                printf("\n%d", checkIndex(mycol));
                 break;
             default:
                 printf("Error 418 : I'm a teapot!\n");
@@ -305,10 +310,6 @@ int main(){
     } if (partSelection == 4){
         printf("Nothing here but take a cookie\n");
     }
-    printf("%d", check_index(mycol));
-    eraseIndex(mycol);
-    updateIndex(mycol);
-    printf("%d", check_index(mycol));*/
+
     return 0;
 }
-
