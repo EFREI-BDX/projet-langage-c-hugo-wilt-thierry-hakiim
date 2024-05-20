@@ -40,5 +40,7 @@ void printNumberOfColumns(CDATAFRAME *cdf);
 int occurrenceValInDataframe(CDATAFRAME *cdf, void* value);
 int countValuesGreaterThan(CDATAFRAME *cdf, void *value);
 int countValuesLesserThan(CDATAFRAME *cdf, void *value);
-ENUM_TYPE determineType(const void *value);
+ENUM_TYPE determineType(void *value);
+void addLineToCdataFrame(CDATAFRAME *cdf, void **values);
+void deleteLineFromCdataFrame(CDATAFRAME *cdf, int lineIndex);
 #endif //PROJET_LANGAGE_C_LINKEDLIST_H
