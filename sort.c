@@ -24,7 +24,7 @@ void insertionSort(COLUMN *col, unsigned int sort_dir, unsigned int size) {
 
 unsigned int partition(COLUMN *col, unsigned int left, unsigned int right, int sort_dir) {
     if (right >= col->index_size) {
-        printf("Error: Index out of bounds\n");
+        printf(":O\n");
         return -1;
     }
     unsigned long long pivot = col->index[right];

@@ -148,6 +148,8 @@ void convertValue(COLUMN *col, unsigned long long int i, char *str, int size){
 
 
 
+
+
 int occurrencePart2(COLUMN *col, void *value) {
     if (col == NULL || value == NULL) {
         return 0;
