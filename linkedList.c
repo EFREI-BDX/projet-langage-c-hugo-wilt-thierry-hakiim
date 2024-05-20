@@ -442,3 +442,67 @@ ENUM_TYPE determineType(const void *value) {
     }
     return NULLVAL;
 }
+
+void addLineToCdataFrame(CDATAFRAME *cdf, void **values){
+    int i=0;
+    if(cdf==NULL || values==0){
+        return;
+    }
+    LNODE *current=cdf->head;
+    while(current!=NULL){
+        COLUMN *col=current->data;
+        COL_TYPE* new_value = (COL_TYPE*)malloc(sizeof(COL_TYPE));
+        switch (col->column_type) {
+            case UINT_TYPE:
+                new_value->uint_type = *(unsigned int*)values[i];
+                break;
+            case INT_TYPE:
+                new_value->int_type = *(signed int*)values[i];
+                break;
+            case CHAR_TYPE:
+                new_value->char_type = *(char*)values[i];
+                break;
+            case FLOAT_TYPE:
+                new_value->float_type = *(float*)values[i];
+                break;
+            case DOUBLE_TYPE:
+                new_value->double_type = *(double*)values[i];
+                break;
+            case STRING_TYPE:
+                new_value->string_type = strdup((char*)values[i]);
+                break;
+            case STRUCT_TYPE:
+
+                break;
+            case NULLVAL:
+
+                break;
+            default:
+                break;
+        }
+        col->data = (COL_TYPE**)realloc(col->data, (col->LOGICAL_SIZE + 1) * sizeof(COL_TYPE*));
+        col->data[col->LOGICAL_SIZE] = new_value;
+        col->LOGICAL_SIZE++;
+
+        current = current->next;
+        i++;
+    }
+}
+
+void deleteLineFromCdataFrame(CDATAFRAME *cdf, int lineIndex) {
+
+    if (cdf == NULL) {
+        return;
+    }
+    LNODE *current = cdf->head;
+    while(current!=NULL){
+        COLUMN *col=current->data;
+        if(col->LOGICAL_SIZE > lineIndex){
+            for(int i=lineIndex;i<col->LOGICAL_SIZE-1;i++){
+                col->data[i]=col->data[i+1];
+            }
+            col->LOGICAL_SIZE--;
+        }
+        current=current->next;
+    }
+}
