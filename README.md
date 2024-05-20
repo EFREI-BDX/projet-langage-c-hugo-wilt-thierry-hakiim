@@ -2,4 +2,15 @@
 
 
 https://github.com/EFREI-BDX/projet-langage-c-hugo-wilt-thierry-hakiim
-Afin de gagner du temps, nous avons décider de commencer directement à faire nos fonctions en utilisant une union de types, cela nous permet d'avoir des fonctions qui fonctionnent avec les données qu'on lui donne, (pour l'instant limité à int, float, char). Nous avons décidé de partir sur la piste de la liste chainée puisqu'elle est beaucoup plus pratique pour des volumes de données significatifs. 
+
+Dans le main, l'utilisateur a le choix entre plusieurs parties.
+En choisissant la partie, on demande ensuit la fonction et des fois des sous fonctions dans les fonctions (fonctions de remplissage à la main et avec input accessibles dans la même fonction).
+Les fonctions sont doncs rangées et permettent à l'utilisateur de ce retrouver facilement.
+
+Quand on fait des opérations sur une colonne, un dataframe, l'utilisateur à le choix entre différents types implémentés : UINT, INT, CHAR, FLOAT, DOUBLE, STRING. 
+Par exemple, si la colonne est de type INT et qu'on recherche un char, il y aura 0 d'occurrence du char.
+
+Notre projet couvre plusieurs parties : 
+COLUMN
+CDataframe
+Sort (avec recherche dichotomique)
