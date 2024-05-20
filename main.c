@@ -305,9 +305,6 @@ int main(){
     } if (partSelection == 4){
         printf("Nothing here but take a cookie\n");
     }
-
-    /*
-
     printf("%d", check_index(mycol));
     eraseIndex(mycol);
     updateIndex(mycol);
