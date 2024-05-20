@@ -19,11 +19,12 @@ void insertionSort(COLUMN *col, unsigned int sort_dir, unsigned int size) {
         }
         col->index[j + 1] = key;
     }
+    col->valid_index = 1;
 }
 
 unsigned int partition(COLUMN *col, unsigned int left, unsigned int right, int sort_dir) {
     if (right >= col->index_size) {
-        printf(":O\n");
+        printf("Error: Index out of bounds\n");
         return -1;
     }
     unsigned long long pivot = col->index[right];
@@ -73,23 +74,27 @@ void quickSort(COLUMN *col, unsigned int low, unsigned int high, int sort_dir) {
             quickSort(col, pi + 1, high, sort_dir);
         }
     }
+    col->valid_index = 1;
 }
 
 void sort(COLUMN *col, int sort_dir) {
     if (col == NULL) {
         printf("The column is NULL\n");
-    } else{
-        col->index = (unsigned long long int *)malloc(col->LOGICAL_SIZE * sizeof(unsigned long long int));
+        return;
+    }
+    if (col->index == NULL) {
+        col->index = (unsigned long long *)malloc(col->LOGICAL_SIZE * sizeof(unsigned long long));
         for (unsigned int i = 0; i < col->LOGICAL_SIZE; i++) {
             col->index[i] = i;
         }
         col->index_size = col->LOGICAL_SIZE;
-        if (col->valid_index == 0) {
-            quickSort(col, 0, col->index_size - 1, sort_dir);
-        } else if (col->valid_index == -1) {
-            insertionSort(col, sort_dir, col->index_size);
-        }
     }
+    if (col->valid_index == 0) {
+        quickSort(col, 0, col->index_size - 1, sort_dir);
+    } else if (col->valid_index == -1) {
+        insertionSort(col, sort_dir, col->index_size);
+    }
+    col->sort_dir = sort_dir;
 }
 
 void displayColByIndex(COLUMN *col) {
@@ -139,10 +144,12 @@ int checkIndex(COLUMN *col){
 }
 
 void updateIndex(COLUMN *col){
+    int valueIndex;
     if (col == NULL){
         printf("No work to do\n");
     } else {
-        col->valid_index = 1;
+        scanf("%d", &valueIndex);
+        col->valid_index = valueIndex;
     }
 }
 
