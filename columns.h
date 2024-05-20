@@ -51,8 +51,6 @@ int numberOfValuesUnderSearchValue(COLUMN* col,Data searchValue);
 int isSameType(Data* value1, Data* value2);
 int compareValues(Data* value1, Data* value2);
 
-
-
 int get_type(char* input);
 COLUMN** createEmptyCDataframe(int size);
 void fillArray(COLUMN** array, int size);
