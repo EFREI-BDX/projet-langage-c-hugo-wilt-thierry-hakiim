@@ -98,11 +98,11 @@ int main(){
                         printf("%d : number of values under %lf\n", numberOfValuesUnderSearchValuePart2(mycol, &valueDOUBLE), valueDOUBLE);
                         break;
                     case 6:
-                        fgets(valueSTRING, 20, stdin);
+                        scanf("%s", valueSTRING);
                         printCol(mycol);
-                        printf("%d  : occurrences of %s\n", occurrencePart2(mycol, "Bravo"), "Bravo");
-                        printf("%d : number of values above %s\n", numberOfValuesAboveSearchValuePart2(mycol, "Bravo"), "Bravo");
-                        printf("%d : number of values under %s\n", numberOfValuesUnderSearchValuePart2(mycol, "Bravo"), "Bravo");
+                        printf("%d  : occurrences of %s\n", occurrencePart2(mycol, valueSTRING), valueSTRING);
+                        printf("%d : number of values above %s\n", numberOfValuesAboveSearchValuePart2(mycol, valueSTRING), valueSTRING);
+                        printf("%d : number of values under %s\n", numberOfValuesUnderSearchValuePart2(mycol, valueSTRING), valueSTRING);
                         break;
                     default:
                         printf("Error 418 : I'm a teapot!\n");
@@ -185,10 +185,10 @@ int main(){
                     printf("Number of values lesser than val : %d\n", countValuesLesserThan(cdf, &valueDOUBLE));
                     break;
                 case 6:
-                    fgets(valueSTRING, 20, stdin);
-                    printf("1 if exists in CDataframe 0 otherwise : %d\n", valueExists(cdf, "Bravo"));
-                    printf("Number of values greater than val : %d\n", countValuesGreaterThan(cdf, "Bravo"));
-                    printf("Number of values lesser than val : %d\n", countValuesLesserThan(cdf, "Bravo"));
+                    scanf("%s", valueSTRING);
+                    printf("1 if exists in CDataframe 0 otherwise : %d\n", valueExists(cdf, valueSTRING));
+                    printf("Number of values greater than val : %d\n", countValuesGreaterThan(cdf, valueSTRING));
+                    printf("Number of values lesser than val : %d\n", countValuesLesserThan(cdf, valueSTRING));
                     break;
                 default:
                     printf("Error 418 : I'm a teapot!\n");
@@ -300,8 +300,8 @@ int main(){
                 insertValuePart2(mycol2, "Tango");
                 sort(mycol2, ASC);
                 displayColByIndex(mycol2);
-                fgets(valueSTRING, 20, stdin);
-                printf("-1: column not sorted, 0: value not found 1: value found, result : %d", searchValueInColumn(mycol2, "Bravo"));
+                scanf("%s", valueSTRING);
+                printf("-1: column not sorted, 0: value not found 1: value found, result : %d", searchValueInColumn(mycol2, valueSTRING));
                 break;
             default:
                 printf("Error 418 : I'm a teapot!\n");
