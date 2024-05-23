@@ -118,7 +118,7 @@ void menuFct() {
             }
         }
     } else if (partSelection ==2){
-        ENUM_TYPE cdftype [] = {UINT_TYPE,CHAR_TYPE,STRING_TYPE};
+        ENUM_TYPE cdftype [] = {UINT_TYPE,DOUBLE_TYPE,STRING_TYPE};
         CDATAFRAME *cdf = createCdataframe(cdftype, 3);
         printf("Choose function : \n1 for size of dataframe\n2 for fill\n3 for print with limit\n4 for search\n5 to add col\n6 replace val at index\n7 change title\n");
         scanf("%d", &functionSelection);
@@ -137,6 +137,7 @@ void menuFct() {
                 printCdataframe(cdf);
             }
         } else if (functionSelection == 3){
+            hardFillCDataframe(cdf);
             int index;
             printf("Enter index\n");
             scanf("%d", &index);
