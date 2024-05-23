@@ -19,6 +19,7 @@ typedef struct list_ {
 } LIST;
 typedef LIST CDATAFRAME;
 
+
 CDATAFRAME *createCdataframe(ENUM_TYPE *cdftype, int size);
 CDATAFRAME* makeCell(ENUM_TYPE type, char *title);
 void deleteColumn(CDATAFRAME *cdf, char *colName);

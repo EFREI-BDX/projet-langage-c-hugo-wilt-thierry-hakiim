@@ -15,8 +15,9 @@ CDATAFRAME *createCdataframe(ENUM_TYPE *cdftype, int size){
     cdf->tail = NULL;
     for (int i = 0; i < size; i++) {
         char title[REALOC_SIZE];
-        snprintf(title, 20, "Column %d", i+1); // Generate a title for each column
         COLUMN *col = createColumnPart2(cdftype[i], title);
+        snprintf(title, 20, "Column %d ", i+1); // Generate a title for each column
+
         if(col == NULL){
             return NULL;
         }
@@ -148,7 +149,7 @@ void hardFillCDataframe(CDATAFRAME *cdf) {
         int numberOfValues = 0;
         printf("Number of values for column %s: ", current->data->title);
         scanf("%d", &numberOfValues);
-        for (int i = 0; i < numberOfValues; i++) {
+        for (int i = 1; i <= numberOfValues; i++) {
             insertValuePart2(current->data, &i);
         }
         current = current->next;

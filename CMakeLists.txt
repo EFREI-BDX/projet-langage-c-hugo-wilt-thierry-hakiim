@@ -9,4 +9,6 @@ add_executable(Projet_Langage_C main.c
         linkedList.c
         linkedList.h
         sort.c
-        sort.h)
+        sort.h
+        menu.c
+        menu.h)

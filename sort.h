@@ -4,7 +4,7 @@
 
 #ifndef PROJET_LANGAGE_C_SORT_H
 #define PROJET_LANGAGE_C_SORT_H
-#include "linkedList.h"
+#include "columns.h"
 #define ASC 0
 #define DESC 1
 
